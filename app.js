@@ -14,9 +14,11 @@ const storage = multer.diskStorage({
 
     // By default, multer removes file extensions so let's add them back
     filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+        cb(null, file.fieldname);
     }
 });
+let upload = multer({ storage});
+
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
@@ -25,16 +27,22 @@ app.get("/" , function(req, res){
     res.render("home");
 });
 
-app.post("/", function(req, res){
-     let upload = multer({ storage}).single('csv-file');
-     console.log(upload);
-     res.render("file")
-     res.send("Your files has been saved");
+// app.post("/", function(req, res){
+//      console.log(upload);
+//      res.render("file")
+//     //  res.render("file",function(req, res){
+//     //     res.send("Your files has been saved");
+//     //  })
+// })
 
-    //  res.render("file",function(req, res){
-    //     res.send("Your files has been saved");
-    //  })
- 
+app.post('/', upload.single('csv-file'), (req, res, next) => {
+    const file = req.file
+    if (!file) {
+      const error = new Error('Please upload a file')
+      error.httpStatusCode = 400
+      return next(error)
+    }
+    res.send("Your files has been saved"); 
 })
 
 //${__dirname}/public/${req.file.filename}
