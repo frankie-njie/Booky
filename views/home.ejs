@@ -16,8 +16,11 @@
         <p>Contact-list</p>
         <p>Male-Contacts</p>
         <p>Female-Contacts</p>
-        <button>Add</button>
-    </div>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="csv-file" >
+            <input type="submit" value="upload">
+        </form>
+    </div> 
     <hr>
 
     <form action="/" method="POST">
@@ -26,7 +29,6 @@
         <button type="submit">search</button>
     </form>
     <hr>
-
     
     <div class="footer">
         <p>Logo</p>
