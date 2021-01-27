@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 });
 
 let upload = multer({ storage});
- 
+
 app.get("/" , function(req, res){
     res.render("home");
 });
@@ -54,32 +54,38 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     .then(function (jsonObj) {
         console.log("jsonObj: ", jsonObj);
 
-        if (jsonObj){
-            BookycontactModel.insertMany(jsonObj, function(err, docs){
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.redirect('/');
+        if (jsonObj && jsonObj.length > 0){
+            jsonObj.forEach((contact, index) => {
+                console.log("> Insert : ", contact["Email Address"]);
+
+                const book = {
+                    "fName" : contact["First Name"],
+                    "lName" : contact["Last Name"],
+                    "email" : contact["Email Address"],
+                    "phoneNum" : contact["Phone Number"],
+                    "Sex": ""
                 }
-            })
+
+                const booky = new BookycontactModel(book);
+
+                booky.save((err) => {
+                    if (err) throw err;
+                    else console.log("> Saved !");
+                });
+            });
         }else{
             console.log("[x] Empty csv file !")
         }
-
     });
 
-    
-
-    
     // TODO: for each line in file, add to db
-    res.send("Your files has been saved"); 
+    res.send("Your files has been saved");
 })
 
 
 // TODO: connect to db. If error, abort
 // const dbURI = "mongodb://localhost:27017/contacts"
 // mongoose.connect(dbURI).then(() => [
-    
 // ]).catch(err => {
 //     console.error('Failed to connect to mongodb. Aborting', err)
 // })
