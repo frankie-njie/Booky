@@ -48,14 +48,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
       return next(error)
     }
 
-<<<<<<< HEAD:app.js
-    // TODO: validate file and return error if any
-
-
-    csv().fromFile(req.file.path)
-    .then(function (jsonObj) {
-        //console.log(jsonObj);
-=======
     // console.log("req.file.path: ", req.file.path);
 
     csv().fromFile(req.file.path)
@@ -73,22 +65,14 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
         }else{
             console.log("[x] Empty csv file !")
         }
->>>>>>> 61c65f028f6455d83d811f594ad7fe9f4a9a3299:index.js
 
     });
 
-<<<<<<< HEAD:app.js
     
 
     
     // TODO: for each line in file, add to db
     res.send("Your files has been saved"); 
-=======
-    // TODO: validate file and return error if any
-    // TODO: for each line in file, add to db.
-
-    // res.send("Your files has been saved"); 
->>>>>>> 61c65f028f6455d83d811f594ad7fe9f4a9a3299:index.js
 })
 
 
