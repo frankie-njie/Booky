@@ -68,9 +68,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
     });
 
-    
 
-    
     // TODO: for each line in file, add to db
     res.send("Your files has been saved"); 
 })
