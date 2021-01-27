@@ -58,9 +58,12 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
       return next(error)
     }
 
+    // TODO: validate file and return error if any
+
+
     csv().fromFile(req.file.path)
     .then(function (jsonObj) {
-        console.log(jsonObj);
+        //console.log(jsonObj);
 
 
         Bookycontact.insertMany(jsonObj, function(err, docs){
@@ -74,10 +77,9 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
     
 
-    // TODO: validate file and return error if any
-    // TODO: for each line in file, add to db.
-
-    // res.send("Your files has been saved"); 
+    
+    // TODO: for each line in file, add to db
+    res.send("Your files has been saved"); 
 })
 
 
