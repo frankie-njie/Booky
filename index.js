@@ -6,22 +6,12 @@ const multer = require('multer');
 const csv = require('csvtojson');
 const path = require('path');
 
+const BookycontactModel = require("./models/BookyContact");
+
 const app = express();
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-
-mongoose.connect('mongodb://localhost:27017/BookyDB', {useNewUrlParser: true, useUnifiedTopology: true});
-// TODO: define contact schema
-const bookySchema = {
-    fName : String,
-    lName : String,
-    email : String,
-    phoneNum : Number,
-    Sex : String
-}
-
-const Bookycontact = mongoose.model('Bookycontact', bookySchema);
 
 // Store uploaded files
 const storage = multer.diskStorage({
@@ -51,35 +41,54 @@ app.get("/" , function(req, res){
 
 app.post('/', upload.single('csv-file'), (req, res, next) => {
     const file = req.file
-    console.log(file);
+    // console.log(file);
     if (!file) {
       const error = new Error('Please upload a file')
       error.httpStatusCode = 400
       return next(error)
     }
 
+<<<<<<< HEAD:app.js
     // TODO: validate file and return error if any
 
 
     csv().fromFile(req.file.path)
     .then(function (jsonObj) {
         //console.log(jsonObj);
+=======
+    // console.log("req.file.path: ", req.file.path);
 
+    csv().fromFile(req.file.path)
+    .then(function (jsonObj) {
+        console.log("jsonObj: ", jsonObj);
 
-        Bookycontact.insertMany(jsonObj, function(err, docs){
-            if (err) {
-                console.log(err);
-            } else {
-                res.redirect('/');
-            }
-        })
+        if (jsonObj){
+            BookycontactModel.insertMany(jsonObj, function(err, docs){
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.redirect('/');
+                }
+            })
+        }else{
+            console.log("[x] Empty csv file !")
+        }
+>>>>>>> 61c65f028f6455d83d811f594ad7fe9f4a9a3299:index.js
+
     });
 
+<<<<<<< HEAD:app.js
     
 
     
     // TODO: for each line in file, add to db
     res.send("Your files has been saved"); 
+=======
+    // TODO: validate file and return error if any
+    // TODO: for each line in file, add to db.
+
+    // res.send("Your files has been saved"); 
+>>>>>>> 61c65f028f6455d83d811f594ad7fe9f4a9a3299:index.js
 })
 
 
