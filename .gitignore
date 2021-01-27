@@ -121,3 +121,5 @@ dist
 .vscode
 uploads/*
 node_modules
+
+yarn.lock
