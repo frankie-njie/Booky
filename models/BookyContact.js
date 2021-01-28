@@ -6,7 +6,7 @@ const BookycontactModel = mongoose.model('Bookycontact', {
     fName : String,
     lName : String,
     email : String,
-    phoneNum : Number,
+    phone : Number,
     Sex : String
 });
 
