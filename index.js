@@ -87,7 +87,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     });
     
 
-    console.log("newjsonObj", newJsonObj)
+    // console.log("newjsonObj", newJsonObj)
     
 
 
@@ -97,39 +97,16 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
             jsonObj.forEach(contact => {
                // console.log("JsonObj : ", jsonObj);
 
-               const nameMappings = {
-                fName: ['first name', 'prenom', 'prénom',],
-                lName: ['last name', 'family name', 'surnom', 'nom de famille',],
-                email: ['email', 'mail', 'email address', 'address', ],
-                phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
-                sex: ['sex', 'gender'],
-            }
+              
             
-            const newJsonObj = jsonObj.map((contact) => {
-                const result = {};
-                // For each individual contact, map each key using 'nameMapping'
-                for (const key in contact) {
-                    const lowerCaseKey = key.toLowerCase();
-                    // Search the nameMappings obj for a match
-                    for (const prop in nameMappings) {
-                        if (nameMappings[prop].includes(lowerCaseKey)) {
-                            result[prop] = contact[key];
-                            break;
-                        }
-                    }
-                }
-                return result;
+
+            const booky = new BookycontactModel(newJsonObj);
+
+            booky.save((err) => {
+                if (err) throw err;
+                else console.log("> Saved !");
             });
-            
-            const booky = new BookycontactModel(result);
-
-
-    booky.save((err) => {
-        if (err) throw err;
-        else console.log("> Saved !");
-    });
     
-
 
                 
                 //Compare jsonObj to array of required fields and map 
@@ -154,31 +131,41 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
             // })
             // jsonObj.forEach((contact, index) => {
 
-            //     // // validation for email address 
-            //     // if(contact["Email Address"] || contact.email === ""){
-            //     //     contact.slice(index);
-            //     //     console.log("This element does not have and email address, email address is required", contact);
-            //     // }else if (!(contact["First Name"] || contact["first Name"])){
-            //     //     console.log(contact);
-                    
-            //     // }
-
-            //     // console.log("> Insert : ", contact["Email Address"] || contact.email);
-
-            //     // const book = {
-            //     //     "fName" : contact["First Name"] || contact["first Name"],
-            //     //     "lName" : contact["Last Name"] || contact["last Name"],
-            //     //     "email" : contact["Email Address"] || contact.email,
-            //     //     "phoneNum" : contact["Phone Number"] || contact.phone ,
-            //     //     "Sex": "" ||  contact.Sex
-            //     // }
-            //     // console.log(book);
-
+       
                
             });
         }else{
             console.log("[x] Empty csv file !")
         }
+
+
+        // const nameMappings = {
+        //     fName: ['first name', 'prenom', 'prénom',],
+        //     lName: ['last name', 'family name', 'surnom', 'nom de famille',],
+        //     email: ['email', 'mail', 'email address', 'address', ],
+        //     phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
+        //     sex: ['sex', 'gender'],
+        // }
+        
+        // const newJsonObj = jsonObj.map((contactkey) => {
+        //     const result = {};
+        //     // For each individual contact, map each key using 'nameMapping'
+        //     for (const key in contactkey) {
+        //         const lowerCaseKey = key.toLowerCase();
+        //         // Search the nameMappings obj for a match
+        //         for (const prop in nameMappings) {
+        //             if (nameMappings[prop].includes(lowerCaseKey)) {
+        //                 result[prop] = contactkey[key];
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     console.log("this is the contact", contact);
+        //     console.log("this is the result obj", result);
+           
+        //     return result;    
+        // });
+        // console.log("newJsonObj: " ,newJsonObj);
     });
 
     res.send("Your files has been saved");
