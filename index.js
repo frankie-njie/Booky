@@ -42,6 +42,8 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
       return next(error)
     }
 
+    const wrongFormat = [];
+
     // console.log("req.file.path: ", req.file.path);
 
     csv().fromFile(req.file.path)
@@ -53,30 +55,35 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     // TODO: for each line in file, add to db
         if (jsonObj && jsonObj.length > 0){
             jsonObj.forEach((contact, index) => {
-                // validation for email address 
-                if(contact["Email Address"] || contact.email === ""){
-                    json.slice(index);
-                    console.log("This element does not have and email address", contact);
-                }
-
-                console.log("> Insert : ", contact["Email Address"] || contact.email);
 
                 const book = {
-                    "fName" : contact["First Name"] || contact["first Name"],
+                    "fName" : contact["First Name"] || contact["first Name"] || contact.prenom || contact["Prenom"],
                     "lName" : contact["Last Name"] || contact["last Name"],
                     "email" : contact["Email Address"] || contact.email,
                     "phoneNum" : contact["Phone Number"] || contact.phone ,
                     "Sex": "" ||  contact.Sex
                 }
-                console.log(book);
 
-                const booky = new BookycontactModel(book);
+                // validation for email address 
+                if(!contact.email){
+                    wrongFormat.push(contact);
+                    jsonObj.slice(index);
+                    console.log("This element does not have and email address", contact);
+                    console.log("This is the wrong format" ,wrongFormat);
+                }else{
+                    console.log(book);
+    
+                    const booky = new BookycontactModel(book);
+    
+                    console.log("> Insert : ", contact["Email Address"] || contact.email);
 
 
-                booky.save((err) => {
-                    if (err) throw err;
-                    else console.log("> Saved !");
-                });
+                    booky.save((err) => {
+                        if (err) throw err;
+                        else console.log("> Saved !");
+                    });
+                }            
+
             });
         }else{
             console.log("[x] Empty csv file !")
