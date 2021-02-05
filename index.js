@@ -48,6 +48,31 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
         // console.log("jsonObj: ", jsonObj);
 
 
+        const nameMappings = {
+            fName: ['first name', 'prenom', 'prénom',],
+            lName: ['last name', 'family name', 'surnom', 'nom de famille',],
+            email: ['email', 'mail', 'email address', 'address', ],
+            phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
+            sex: ['sex', 'gender'],
+        }
+        
+        const newJsonObj = jsonObj.map((contact) => {
+            const result = {};
+            // For each individual contact, map each key using 'nameMapping'
+            for (const key in contact) {
+                const lowerCaseKey = key.toLowerCase();
+                // Search the nameMappings obj for a match
+                for (const prop in nameMappings) {
+                    if (nameMappings[prop].includes(lowerCaseKey)) {
+                        result[prop] = contact[key];
+                        break;
+                    }
+                }
+            }
+            return result;
+        });
+
+
     // TODO: Required fields
     const reqFields = ['email', 'first name', 'last name', 'phone'];
     const CONTACT_NAMES = ['first name','last name'];
