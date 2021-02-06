@@ -89,18 +89,8 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
         console.log(result);
         return result;
     });
-    
 
-    console.log("newjsonObj", newJsonObj)
-
-            // const booky = new BookycontactModel(newJsonObj);
-
-            // booky.save((err) => {
-            //     if (err) throw err;
-            //     else console.log("> Saved !");
-            // });
-    
-
+        console.log("newjsonObj", newJsonObj)
 
 
     // TODO: for each line in file, add to db
@@ -123,7 +113,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
                     else console.log("> Saved !");
                 });
             }
-
+            
                 
                 //Compare jsonObj to array of required fields and map 
             //     if(validateContactFields(Object.keys(contact)) && contact.email ){
