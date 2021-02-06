@@ -7,6 +7,7 @@ const csv = require('csvtojson');
 // const path = require('path');
 
 const BookycontactModel = require("./models/BookyContact");
+const json = require('body-parser/lib/types/json');
 //const {json} = require('body-parser');
 
 const app = express();
@@ -45,85 +46,72 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     //convert csv to json format
     csv().fromFile(req.file.path)
     .then(function (jsonObj) {
-        // console.log("jsonObj: ", jsonObj);
+         //console.log("jsonObj: ", jsonObj);
 
+    // TODO: Check for Required fields
+    // const reqFields = ['email', 'first name', 'last name', 'phone'];
+    // const CONTACT_NAMES = ['first name','last name'];
 
-        const nameMappings = {
-            fName: ['first name', 'prenom', 'prénom',],
-            lName: ['last name', 'family name', 'surnom', 'nom de famille',],
-            email: ['email', 'mail', 'email address', 'address', ],
-            phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
-            sex: ['sex', 'gender'],
+    // const validateContactFields = arr => {
+    //     arr = arr.map(ele => ele.toLowerCase());
+    //     let status = true;
+
+    //     for (let index = 0; index < reqFields.length; index++) {
+    //         if(!arr.includes(reqFields[index])) {
+    //             status = false;
+    //             break;
+    //         }
+    //     }
+    // }
+
+    // const nameMappings = {
+    //     fName: ['first name', 'prenom', 'prénom',],
+    //     lName: ['last name', 'family name', 'surnom', 'nom de famille',],
+    //     email: ['email', 'mail', 'email address', 'address', ],
+    //     phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
+    //     sex: ['sex', 'gender'],
+    // }
+
+    const parsedObj = [];
+    jsonObj.forEach((el, val) => {
+        const newObj = {}
+        for(keys in el) {
+            //console.log(keys);
+            const newKey = keys.split(' ').join('_').toLowerCase();
+            //console.log(newKey)
+            newObj[newKey] = el[keys];
+            //console.log("result: ", newObj[newKey] = el[keys]);
         }
-        
-        const newJsonObj = jsonObj.map((contact) => {
-            const result = {};
-            // For each individual contact, map each key using 'nameMapping'
-            for (const key in contact) {
-                const lowerCaseKey = key.toLowerCase();
-                // Search the nameMappings obj for a match
-                for (const prop in nameMappings) {
-                    if (nameMappings[prop].includes(lowerCaseKey)) {
-                        result[prop] = contact[key];
-                        break;
-                    }
-                }
+        parsedObj.push(newObj);
+        //console.log(parsedObj.push(newObj));
+    })
+    // console.log('new parsed res ===>', parsedObj);
+   
+    // TODO: for each line in file, add to db
+        if (parsedObj && parsedObj.length > 0){
+            parsedObj.forEach(contact => {
+                //console.log("parsedObj : ", parsedObj);
+
+            if(!(contact.email_address || contact.email)){
+                wrongFormat.push(contact);
+                parsedObj.slice(contact);
+                // console.log("This element does not have and email address", contact);
+                // console.log("This is the wrong format" ,wrongFormat);
+            }else{
+                const booky = new BookycontactModel(contact);
+
+                console.log(' case 1', contact);
+
+
+                booky.save((err) => {
+                    if (err) throw err;
+                    else console.log("> Saved !");
+                });
             }
-            return result;
         });
-
-
-    // TODO: Required fields
-    const reqFields = ['email', 'first name', 'last name', 'phone'];
-    const CONTACT_NAMES = ['first name','last name'];
-
-    const validateContactFields = arr => {
-        arr = arr.map(ele => ele.toLowerCase());
-        let status = true;
-
-        //validation for csv field titles
-        for (let index = 0; index < reqFields.length; index++) {
-            if(!arr.includes(reqFields[index])) {
-                status = false;
-                break;
-            }
-        }
-        return status;
-    }
-
-    // Checking for available inputs in csv file
-        if (jsonObj && jsonObj.length > 0){
-            jsonObj.forEach(contact => {
                 
-                if(validateContactFields(Object.keys(contact)) && contact.email ){
-                    const newContact = {}
 
-                    Object.keys(contact).map(field => {
-
-                        const name = field.toLowerCase();
-                       
-                        if(CONTACT_NAMES.includes(name) ){
-                            newContact[name[0] + "Name" ] = contact[field]
-                        }
-                        else newContact[name] = contact[field]
-                    });
-                     console.log(newContact);
-
-                     const booky = new BookycontactModel(newContact);
-
-
-                     booky.save((err) => {
-                         if (err) throw err;
-                         else console.log("> Saved !");
-                     });
-                }
-
-                else console.log("wrong format:", contact)
-            })
-
-           
-
-
+            
             // jsonObj.forEach((contact, index) => {
 
             //     const contactsKeys = Object.keys(contact);
@@ -157,7 +145,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
             //     // console.log(book);
 
             
-            // });
+           
         }else{
             console.log("[x] Empty csv file !")
         }
