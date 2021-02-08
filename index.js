@@ -113,7 +113,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
                     else console.log("> Saved !");
                 });
             }
-            
+
                 
                 //Compare jsonObj to array of required fields and map 
             //     if(validateContactFields(Object.keys(contact)) && contact.email ){
@@ -144,10 +144,14 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
             console.log("[x] Empty csv file !")
         }
 
-
     });
 
-    res.send("Your files has been saved");
+
+    //Search functionality
+    let searchText = req.body.search;
+    console.log(searchText)
+
+    res.render("home");
 })
 
 
