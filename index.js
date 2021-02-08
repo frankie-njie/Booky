@@ -47,7 +47,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     //Convert csv to JsonObject
     csv().fromFile(req.file.path)
     .then(function (jsonObj) {
-        // console.log("jsonObj: ", jsonObj);
+        console.log("jsonObj: ", jsonObj);
 
     // TODO: Check for Required fields
     // const reqFields = ['email', 'first name', 'last name', 'phone'];
@@ -68,7 +68,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     const nameMappings = {
         fName: ['first name', 'prenom', 'prénom',],
         lName: ['last name', 'family name', 'surnom', 'nom de famille',],
-        email: ['email', 'mail', 'email address', 'address', ],
+        email: ['email', 'mail', 'email address', ],
         phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
         sex: ['sex', 'gender'],
     }
@@ -90,13 +90,14 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
         return result;
     });
 
-        console.log("newjsonObj", newJsonObj)
+        //console.log("newjsonObj", newJsonObj)
 
 
     // TODO: for each line in file, add to db
         if (newJsonObj && newJsonObj.length > 0){
             newJsonObj.forEach(contact => {
-               // console.log("JsonObj : ", jsonObj);
+                // console.log("JsonObj : ", jsonObj);
+                // console.log("newjsonObj", newJsonObj)
 
             if(!contact.email){
                 wrongFormat.push(contact);
@@ -106,7 +107,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
             }else{
                 const booky = new BookycontactModel(contact);
 
-                console.log(contact);
+               // console.log("this is contact",contact);
 
                 booky.save((err) => {
                     if (err) throw err;
@@ -148,10 +149,10 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
 
     //Search functionality
-    let searchText = req.body.search;
-    console.log(searchText)
+    // let searchText = req.body.search;
+    // console.log(searchText)
 
-    res.render("home");
+    res.send("your files have been saved");
 })
 
 
