@@ -44,10 +44,14 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
     const wrongFormat = [];
 
+    // console.log("req.file.path: ", req.file.path);
+
+  
     //Convert csv to JsonObject
     csv().fromFile(req.file.path)
     .then(function (jsonObj) {
         console.log("jsonObj: ", jsonObj);
+
 
     // TODO: Check for Required fields
     // const reqFields = ['email', 'first name', 'last name', 'phone'];
@@ -140,6 +144,39 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
             //console.log(contact);
                
+
+    // TODO: for each line in file, add to db
+        if (jsonObj && jsonObj.length > 0){
+            jsonObj.forEach((contact, index) => {
+
+                const book = {
+                    "fName" : contact["First Name"] || contact["first Name"] || contact.prenom || contact["Prenom"],
+                    "lName" : contact["Last Name"] || contact["last Name"],
+                    "email" : contact["Email Address"] || contact.email,
+                    "phoneNum" : contact["Phone Number"] || contact.phone ,
+                    "Sex": "" ||  contact.Sex
+                }
+
+                // validation for email address 
+                if(!contact.email){
+                    wrongFormat.push(contact);
+                    jsonObj.slice(index);
+                    console.log("This element does not have and email address", contact);
+                    console.log("This is the wrong format" ,wrongFormat);
+                }else{
+                    console.log(book);
+    
+                    const booky = new BookycontactModel(book);
+    
+                    console.log("> Insert : ", contact["Email Address"] || contact.email);
+
+
+                    booky.save((err) => {
+                        if (err) throw err;
+                        else console.log("> Saved !");
+                    });
+                }            
+
             });
         }else{
             console.log("[x] Empty csv file !")
