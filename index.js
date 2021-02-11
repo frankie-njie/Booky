@@ -7,6 +7,7 @@ const csv = require('csvtojson');
 // const path = require('path');
 
 const BookycontactModel = require("./models/BookyContact");
+// const getBookyContacts = require("./models/getBookyContact");
 //const {json} = require('body-parser');
 
 const app = express();
@@ -32,6 +33,52 @@ app.get("/" , function(req, res){
     res.render("home");
 });
 
+app.get("/search", function(req, res){
+    //Read the query
+    const query = req.query.q.toLowerCase();
+    const mongoQuery = { $or: [ { first_name: query }, { last_name: query }, ] };
+    console.log(mongoQuery);
+    //Find the query
+    const contact = BookycontactModel.find({}, function(err, contacts){
+        if (err){
+            console.log(err);
+            throw err;
+        }
+
+        contacts.forEach(bookyContact => {
+            //console.log(bookyContact);
+            let keys = Object.keys(bookyContact);
+            console.log("keys for bookycontact", keys);
+
+            // keys.forEach(key => {
+            //     if(key.includes(query)){
+            //         console.log(key);
+            //         return key
+            //     };
+            // });
+
+            // for (const key in bookyContact) {
+            //     if (bookyContact.hasOwnProperty.call(object, key)) {
+            //         const element = object[key];
+            //         console.log(element);
+                    
+            //     }
+            // }
+        });
+
+        // const filteredContacts = contacts.filter((contact) => {
+        //     for (const key in contact) {
+        //         if (contact[key].includes(query)) {
+        //             return true;
+        //         }
+        //     }
+        // });
+        // console.log('Filtered contacts:', filteredContacts);
+        // return filteredContacts;
+    })
+    //Print query
+});
+
 
 app.post('/', upload.single('csv-file'), (req, res, next) => {
     const file = req.file
@@ -50,7 +97,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     //Convert csv to JsonObject
     csv().fromFile(req.file.path)
     .then(function (jsonObj) {
-        console.log("jsonObj: ", jsonObj);
+    //console.log("jsonObj: ", jsonObj);
 
 
     // TODO: Check for Required fields
@@ -72,7 +119,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     const nameMappings = {
         fName: ['first name', 'prenom', 'prénom',],
         lName: ['last name', 'family name', 'surnom', 'nom de famille',],
-        email: ['email', 'mail', 'email address', ],
+        email: ['email', 'mail', 'email address', 'address mail' ],
         phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
         sex: ['sex', 'gender'],
     }
