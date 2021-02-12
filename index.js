@@ -42,73 +42,18 @@ app.get("/search", function(req, res){
 
     //Find the query
     const contact = BookycontactModel.find(mongoQuery, function(err, contacts){
-        //console.log(contacts)
+        console.log(contacts)
         if (err){
             console.log(err);
             throw err;
         }
-
-        contacts.forEach(bookyContact => {
-            //console.log(bookyContact);
-            // let keys = Object.keys(contacts);
-            // console.log("keys for bookycontact", keys);
-
-            Object.filter = function( bookyContact, predicate) {
-                let result = {}, key;
-            
-                for (key in obj) {
-                    if (obj.hasOwnProperty(key) && !predicate(bookyContact[key])) {
-                        result[key] = bookyContact[key];
-                        console.log(result[key]);
-                    }
-                }
-            
-                return result;
-            };
-
-            // for (const key in bookyContact) {
-            //     //console.log(Object.hasOwnProperty(key));
-            //     if (Object.hasOwnProperty(key)) {
-            //         console.log(key);
-            //         // const value = bookyContact[key];
-            //         // console.log(value);
-                    
-            //     }
-            // }
-
-            // for (let i = 0; i < bookyContact.length; i++) {
-            //     console.log(bookyContact.length);
-            // }
-
-            // keys.forEach(key => {
-            //     if(key.includes(query)){
-            //         console.log(key);
-            //         return key
-            //     };
-            // });
-
-            //let result = Object.values(bookyContact).forEach(val => console.log(val));
-         
-
-            // for (const key in bookyContact) {
-            //         if (bookyContact[key].includes(query)) {
-            //             return true;
-            //         }               
-            //     }
-            
-        });
-
-        // const filteredContacts = contacts.filter((contact) => {
-        //     for (const key in contact) {
-        //         if (contact[key].includes(query)) {
-        //             return true;
-        //         }
-        //     }
+        return  res.send(contacts)
+        // contacts.forEach(bookyContact => {
+          //console.log(bookyContact); 
         // });
-        // console.log('Filtered contacts:', filteredContacts);
-        // return filteredContacts;
-    })
+    });
     //Print query
+   
 });
 
 
