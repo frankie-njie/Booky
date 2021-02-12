@@ -7,7 +7,6 @@ const csv = require('csvtojson');
 // const path = require('path');
 
 const BookycontactModel = require("./models/BookyContact");
-//const {json} = require('body-parser');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -32,6 +31,86 @@ app.get("/" , function(req, res){
     res.render("home");
 });
 
+//Search functionality
+app.get("/search", function(req, res){
+    if (!req.query.q) {
+        return;
+    }
+    //Read the query
+    const query = new RegExp(`.*${req.query.q}.*`, 'i');
+    const mongoQuery = { $or: [ { fName: query }, { lName: query }, {email: query}, {Sex: query} ] };
+
+    //Find the query
+    const contact = BookycontactModel.find(mongoQuery, function(err, contacts){
+        //console.log(contacts)
+        if (err){
+            console.log(err);
+            throw err;
+        }
+
+        contacts.forEach(bookyContact => {
+            //console.log(bookyContact);
+            // let keys = Object.keys(contacts);
+            // console.log("keys for bookycontact", keys);
+
+            Object.filter = function( bookyContact, predicate) {
+                let result = {}, key;
+            
+                for (key in obj) {
+                    if (obj.hasOwnProperty(key) && !predicate(bookyContact[key])) {
+                        result[key] = bookyContact[key];
+                        console.log(result[key]);
+                    }
+                }
+            
+                return result;
+            };
+
+            // for (const key in bookyContact) {
+            //     //console.log(Object.hasOwnProperty(key));
+            //     if (Object.hasOwnProperty(key)) {
+            //         console.log(key);
+            //         // const value = bookyContact[key];
+            //         // console.log(value);
+                    
+            //     }
+            // }
+
+            // for (let i = 0; i < bookyContact.length; i++) {
+            //     console.log(bookyContact.length);
+            // }
+
+            // keys.forEach(key => {
+            //     if(key.includes(query)){
+            //         console.log(key);
+            //         return key
+            //     };
+            // });
+
+            //let result = Object.values(bookyContact).forEach(val => console.log(val));
+         
+
+            // for (const key in bookyContact) {
+            //         if (bookyContact[key].includes(query)) {
+            //             return true;
+            //         }               
+            //     }
+            
+        });
+
+        // const filteredContacts = contacts.filter((contact) => {
+        //     for (const key in contact) {
+        //         if (contact[key].includes(query)) {
+        //             return true;
+        //         }
+        //     }
+        // });
+        // console.log('Filtered contacts:', filteredContacts);
+        // return filteredContacts;
+    })
+    //Print query
+});
+
 
 app.post('/', upload.single('csv-file'), (req, res, next) => {
     const file = req.file
@@ -44,14 +123,10 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
     const wrongFormat = [];
 
-    // console.log("req.file.path: ", req.file.path);
-
-  
     //Convert csv to JsonObject
     csv().fromFile(req.file.path)
     .then(function (jsonObj) {
-        console.log("jsonObj: ", jsonObj);
-
+    //console.log("jsonObj: ", jsonObj);
 
     // TODO: Check for Required fields
     // const reqFields = ['email', 'first name', 'last name', 'phone'];
@@ -72,7 +147,7 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     const nameMappings = {
         fName: ['first name', 'prenom', 'prénom',],
         lName: ['last name', 'family name', 'surnom', 'nom de famille',],
-        email: ['email', 'mail', 'email address', ],
+        email: ['email', 'mail', 'email address', 'address mail' ],
         phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
         sex: ['sex', 'gender'],
     }
@@ -144,39 +219,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
             //console.log(contact);
                
-
-    // TODO: for each line in file, add to db
-        if (jsonObj && jsonObj.length > 0){
-            jsonObj.forEach((contact, index) => {
-
-                const book = {
-                    "fName" : contact["First Name"] || contact["first Name"] || contact.prenom || contact["Prenom"],
-                    "lName" : contact["Last Name"] || contact["last Name"],
-                    "email" : contact["Email Address"] || contact.email,
-                    "phoneNum" : contact["Phone Number"] || contact.phone ,
-                    "Sex": "" ||  contact.Sex
-                }
-
-                // validation for email address 
-                if(!contact.email){
-                    wrongFormat.push(contact);
-                    jsonObj.slice(index);
-                    console.log("This element does not have and email address", contact);
-                    console.log("This is the wrong format" ,wrongFormat);
-                }else{
-                    console.log(book);
-    
-                    const booky = new BookycontactModel(book);
-    
-                    console.log("> Insert : ", contact["Email Address"] || contact.email);
-
-
-                    booky.save((err) => {
-                        if (err) throw err;
-                        else console.log("> Saved !");
-                    });
-                }            
-
             });
         }else{
             console.log("[x] Empty csv file !")
@@ -184,10 +226,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
     });
 
-
-    //Search functionality
-    // let searchText = req.body.search;
-    // console.log(searchText)
 
     res.send("your files have been saved");
 })
