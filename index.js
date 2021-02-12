@@ -39,8 +39,8 @@ app.get("/search", function(req, res){
     }
     //Read the query
     const query = new RegExp(`.*${req.query.q}.*`, 'i');
-    const mongoQuery = { $or: [ { fName: query }, { lName: query }, {email: query} ] };
-    //console.log(mongoQuery)
+    const mongoQuery = { $or: [ { fName: query }, { lName: query }, {email: query}, {phoneNum: query}, {Sex: query} ] };
+
     //Find the query
     const contact = BookycontactModel.find(mongoQuery, function(err, contacts){
         console.log(contacts)
