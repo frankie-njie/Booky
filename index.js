@@ -7,8 +7,6 @@ const csv = require('csvtojson');
 // const path = require('path');
 
 const BookycontactModel = require("./models/BookyContact");
-// const getBookyContacts = require("./models/getBookyContact");
-//const {json} = require('body-parser');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -33,17 +31,18 @@ app.get("/" , function(req, res){
     res.render("home");
 });
 
+//Search functionality
 app.get("/search", function(req, res){
     if (!req.query.q) {
         return;
     }
     //Read the query
     const query = new RegExp(`.*${req.query.q}.*`, 'i');
-    const mongoQuery = { $or: [ { fName: query }, { lName: query }, {email: query}, {phoneNum: query}, {Sex: query} ] };
+    const mongoQuery = { $or: [ { fName: query }, { lName: query }, {email: query}, {Sex: query} ] };
 
     //Find the query
     const contact = BookycontactModel.find(mongoQuery, function(err, contacts){
-        console.log(contacts)
+        //console.log(contacts)
         if (err){
             console.log(err);
             throw err;
@@ -51,8 +50,35 @@ app.get("/search", function(req, res){
 
         contacts.forEach(bookyContact => {
             //console.log(bookyContact);
-            let keys = Object.keys(bookyContact);
-            //console.log("keys for bookycontact", keys);
+            // let keys = Object.keys(contacts);
+            // console.log("keys for bookycontact", keys);
+
+            Object.filter = function( bookyContact, predicate) {
+                let result = {}, key;
+            
+                for (key in obj) {
+                    if (obj.hasOwnProperty(key) && !predicate(bookyContact[key])) {
+                        result[key] = bookyContact[key];
+                        console.log(result[key]);
+                    }
+                }
+            
+                return result;
+            };
+
+            // for (const key in bookyContact) {
+            //     //console.log(Object.hasOwnProperty(key));
+            //     if (Object.hasOwnProperty(key)) {
+            //         console.log(key);
+            //         // const value = bookyContact[key];
+            //         // console.log(value);
+                    
+            //     }
+            // }
+
+            // for (let i = 0; i < bookyContact.length; i++) {
+            //     console.log(bookyContact.length);
+            // }
 
             // keys.forEach(key => {
             //     if(key.includes(query)){
@@ -61,13 +87,15 @@ app.get("/search", function(req, res){
             //     };
             // });
 
+            //let result = Object.values(bookyContact).forEach(val => console.log(val));
+         
+
             // for (const key in bookyContact) {
-            //     if (bookyContact.hasOwnProperty.call(object, key)) {
-            //         const element = object[key];
-            //         console.log(element);
-                    
+            //         if (bookyContact[key].includes(query)) {
+            //             return true;
+            //         }               
             //     }
-            // }
+            
         });
 
         // const filteredContacts = contacts.filter((contact) => {
@@ -198,10 +226,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 
     });
 
-
-    //Search functionality
-    // let searchText = req.body.search;
-    // console.log(searchText)
 
     res.send("your files have been saved");
 })
