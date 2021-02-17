@@ -23,10 +23,12 @@
     </div> 
     <hr>
 
-    <form action="/" method="POST">
+    <form action="/search" method="GET">
         <h2>Booky</h2>
-        <input type="text" name="search" id="">
+        <input type="text" name="search" id="searchText">
         <button type="submit" name="search">search</button>
+        
+        <div id="match-list"></div>
     </form>
     <hr>
     
@@ -37,4 +39,47 @@
     </div>
     
 </body>
+<script>
+    //const url = "http://localhost:3000/search?q=" + searchText.value ;
+
+    let searchText = document.getElementById("searchText");
+    let matchdiv = document.getElementById("match-list")
+
+    // const request = new Request(endpoint, {
+    //     method: 'GET',
+    //     //mode: 'cors',
+    //     //redirect: 'follow',
+    //     cache: 'no-cache',
+    //     q: searchText
+    // });
+
+    searchText.addEventListener("keypress", function(e){
+        const url = "http://localhost:3000/search?q=" + searchText.value.toString() ;
+        // const urlParams = {q: searchText.value}
+        // console.log(urlParams);
+
+        fetch(url)
+        .then(Blob => Blob.json())
+        .then(data => console.log(data))
+        console.log();
+        //console.log(q);
+
+        // fetch(url)
+        // .then( response => {
+        // matchdiv.innerHTML = 'Waiting for response...';
+        // if(response.ok) {
+        // return response;
+        // }
+        // throw Error(response.statusText);
+        // })
+        // .then( response => response.text() )
+        // .then( text => console.log( searchText.innerText = text) )
+        // .catch( error => console.log('There was an error:',error))
+
+        // console.log();
+        
+    },false);
+
+         
+</script>
 </html>

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const ejs = require('ejs');
 const multer = require('multer');
 const csv = require('csvtojson');
+//const https = require('https');
 // const path = require('path');
 
 const BookycontactModel = require("./models/BookyContact");
@@ -41,18 +42,15 @@ app.get("/search", function(req, res){
     const mongoQuery = { $or: [ { fName: query }, { lName: query }, {email: query}, {Sex: query} ] };
 
     //Find the query
-    const contact = BookycontactModel.find(mongoQuery, function(err, contacts){
-        console.log(contacts)
+    BookycontactModel.find(mongoQuery, function(err, contacts){
+        //console.log(contacts)
         if (err){
             console.log(err);
             throw err;
         }
-        return  res.send(contacts)
-        // contacts.forEach(bookyContact => {
-          //console.log(bookyContact); 
-        // });
+        //Print query
+        return  res.send(contacts);
     });
-    //Print query
    
 });
 
@@ -120,7 +118,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     // TODO: for each line in file, add to db
         if (newJsonObj && newJsonObj.length > 0){
             newJsonObj.forEach(contact => {
-                // console.log("JsonObj : ", jsonObj);
                 // console.log("newjsonObj", newJsonObj)
 
             if(!contact.email){
