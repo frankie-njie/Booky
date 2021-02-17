@@ -40,17 +40,18 @@
     
 </body>
 <script>
-    //const url = "http://localhost:3000/search?q=" + searchText.value ;
+    const url = "http://localhost:3000/search" ;
 
     let searchText = document.getElementById("searchText");
     let matchdiv = document.getElementById("match-list");
 
-    searchText.addEventListener("keypress", function(e){
-        const url = "http://localhost:3000/search?q=" + searchText.value.toString() ;
+    searchText.addEventListener("keyup", function(e){
+        const newUrl = "http://localhost:3000/search?q=" + searchText.value.toString() ;
+        console.log(searchText.value);
         // const urlParams = {q: searchText.value}
         // console.log(urlParams);
 
-        fetch(url)
+        fetch(newUrl)
         .then(Blob => Blob.json())
         .then(data => console.log(data))
         console.log();
