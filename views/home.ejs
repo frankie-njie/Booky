@@ -43,15 +43,7 @@
     //const url = "http://localhost:3000/search?q=" + searchText.value ;
 
     let searchText = document.getElementById("searchText");
-    let matchdiv = document.getElementById("match-list")
-
-    // const request = new Request(endpoint, {
-    //     method: 'GET',
-    //     //mode: 'cors',
-    //     //redirect: 'follow',
-    //     cache: 'no-cache',
-    //     q: searchText
-    // });
+    let matchdiv = document.getElementById("match-list");
 
     searchText.addEventListener("keypress", function(e){
         const url = "http://localhost:3000/search?q=" + searchText.value.toString() ;
@@ -64,20 +56,6 @@
         console.log();
         //console.log(q);
 
-        // fetch(url)
-        // .then( response => {
-        // matchdiv.innerHTML = 'Waiting for response...';
-        // if(response.ok) {
-        // return response;
-        // }
-        // throw Error(response.statusText);
-        // })
-        // .then( response => response.text() )
-        // .then( text => console.log( searchText.innerText = text) )
-        // .catch( error => console.log('There was an error:',error))
-
-        // console.log();
-        
     },false);
 
          
