@@ -56,6 +56,10 @@
         // .then(Blob => Blob.json())
         // .then(data => contact.push(...data))
         // console.log(contact);
+        if(!searchText.value){
+            matchdiv.innerHTML = ''
+            return 
+        }
 
         fetch(newUrl)
         .then( response => {
@@ -67,14 +71,20 @@
         })
         .then( response => response.json())
         .then( data => {
-            data.forEach(element => {
-                console.log(element.email);
+            
+                data.forEach(element => {
+                //console.log(element.email);
                 //let content = document.createTextNode((element.email).toString())
+                let anchor = document.createElement("a")
                 let newList = document.createElement('li');
                 newList.textContent = (element.email).toString();
-                matchdiv.appendChild(newList);
+                anchor.appendChild(newList)
+                anchor.href = '#';
+                matchdiv.appendChild(anchor);
+
             });
-            //onsole.log(data) 
+            //onsole.log(data)
+           
         })
         .catch( error => console.log('There was an error:',error))
 
