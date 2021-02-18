@@ -41,6 +41,7 @@
 </body>
 <script>
     const url = "http://localhost:3000/search" ;
+    const contact = [];
 
     let searchText = document.getElementById("searchText");
     let matchdiv = document.getElementById("match-list");
@@ -51,14 +52,37 @@
         // const urlParams = {q: searchText.value}
         // console.log(urlParams);
 
+        // fetch(newUrl)
+        // .then(Blob => Blob.json())
+        // .then(data => contact.push(...data))
+        // console.log(contact);
+
         fetch(newUrl)
-        .then(Blob => Blob.json())
-        .then(data => console.log(data))
-        console.log();
-        //console.log(q);
+        .then( response => {
+        matchdiv.innerHTML = 'Waiting for response...';
+        if(response.ok) {
+        return response;
+        }
+        throw Error(response.statusText);
+        })
+        .then( response => response.json())
+        .then( data => {
+            data.forEach(element => {
+                console.log(element.email);
+                //let content = document.createTextNode((element.email).toString())
+                let newList = document.createElement('li');
+                newList.textContent = (element.email).toString();
+                matchdiv.appendChild(newList);
+            });
+            //onsole.log(data) 
+        })
+        .catch( error => console.log('There was an error:',error))
 
     },false);
 
+    // let newList = document.createElement('li');
+    // let content = document.createTextNode(element);
+    // let list = newList.appendChild(content);
          
 </script>
 </html>
