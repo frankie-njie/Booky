@@ -26,7 +26,7 @@
     <form action="/search" method="GET">
         <h2>Booky</h2>
         <input type="text" name="search" id="searchText">
-        <button type="submit" name="search">search</button>
+        <button type="submit" name="search" id="search-btn">search</button>
         
         <div id="match-list"></div>
     </form>
@@ -46,7 +46,8 @@
 
     let searchText = document.getElementById("searchText");
     let matchdiv = document.getElementById("match-list");
-    let popupDiv = document.getElementById("popup")
+    let popupDiv = document.getElementById("popup");
+    let searchBtn = document.getElementById("search-btn")
 
     searchText.addEventListener("keyup", function(e){
         const newUrl = "http://localhost:3000/search?q=" + searchText.value.toString() ;
@@ -73,12 +74,13 @@
         .then( data => {
             
                 data.forEach(element => {               
-                //console.log(element.email);
+                console.log(element.fName);
 
                 //Display of suggestion for the search
                 let anchor = document.createElement("a")
                 let newList = document.createElement('li');
-                newList.textContent = (element.email).toString();
+                newList.textContent = (element.fName).toString() + ",  " +(element.email).toString();
+
                 anchor.appendChild(newList)
                 anchor.href = '#';
                 anchor.id = element._id;
@@ -105,7 +107,17 @@
                     popupDiv.innerHTML = htmlPopup;
                     console.log(currentTarget.id)
                     console.log(popupDiv)
-                })
+                });
+
+                //event listener to display all details on another page
+                // searchBtn.addEventListener('click', function(e){
+                //     e.preventDefault();
+                //     const seachbtndisplay = `
+                //     <div>
+                //         <p>${element.email}</p>
+                //     </div>` ;
+                //     popupDiv.innerHTML = seachbtndisplay;
+                // })
                     // console.log("All your details",email, fName, lName);
             });
             //onsole.log(data)
