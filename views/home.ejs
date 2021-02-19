@@ -53,11 +53,7 @@
         console.log(searchText.value);
         // const urlParams = {q: searchText.value}
         // console.log(urlParams);
-
-        // fetch(newUrl)
-        // .then(Blob => Blob.json())
-        // .then(data => contact.push(...data))
-        // console.log(contact);
+        
         if(!searchText.value){
             matchdiv.innerHTML = '';
             popupDiv.innerHTML = '';
@@ -91,7 +87,7 @@
                 // event listener to display details for each suggestion
                 anchor.addEventListener('click', ({currentTarget}) => {
                     const htmlPopup = `<div class=popup>
-                                <img src="" alt="">
+                                d<img src="" alt="">
                                 <h5>Email</h5>
                                 <p>${element.email}</p>
 
@@ -119,9 +115,6 @@
 
     },false);
 
-    // let newList = document.createElement('li');
-    // let content = document.createTextNode(element);
-    // let list = newList.appendChild(content);
          
 </script>
 </html>
