@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const ejs = require('ejs');
 const multer = require('multer');
 const csv = require('csvtojson');
+//const https = require('https');
 // const path = require('path');
 
 const BookycontactModel = require("./models/BookyContact");
@@ -41,74 +42,16 @@ app.get("/search", function(req, res){
     const mongoQuery = { $or: [ { fName: query }, { lName: query }, {email: query}, {Sex: query} ] };
 
     //Find the query
-    const contact = BookycontactModel.find(mongoQuery, function(err, contacts){
+    BookycontactModel.find(mongoQuery, function(err, contacts){
         //console.log(contacts)
         if (err){
             console.log(err);
             throw err;
         }
-
-        contacts.forEach(bookyContact => {
-            //console.log(bookyContact);
-            // let keys = Object.keys(contacts);
-            // console.log("keys for bookycontact", keys);
-
-            Object.filter = function( bookyContact, predicate) {
-                let result = {}, key;
-            
-                for (key in obj) {
-                    if (obj.hasOwnProperty(key) && !predicate(bookyContact[key])) {
-                        result[key] = bookyContact[key];
-                        console.log(result[key]);
-                    }
-                }
-            
-                return result;
-            };
-
-            // for (const key in bookyContact) {
-            //     //console.log(Object.hasOwnProperty(key));
-            //     if (Object.hasOwnProperty(key)) {
-            //         console.log(key);
-            //         // const value = bookyContact[key];
-            //         // console.log(value);
-                    
-            //     }
-            // }
-
-            // for (let i = 0; i < bookyContact.length; i++) {
-            //     console.log(bookyContact.length);
-            // }
-
-            // keys.forEach(key => {
-            //     if(key.includes(query)){
-            //         console.log(key);
-            //         return key
-            //     };
-            // });
-
-            //let result = Object.values(bookyContact).forEach(val => console.log(val));
-         
-
-            // for (const key in bookyContact) {
-            //         if (bookyContact[key].includes(query)) {
-            //             return true;
-            //         }               
-            //     }
-            
-        });
-
-        // const filteredContacts = contacts.filter((contact) => {
-        //     for (const key in contact) {
-        //         if (contact[key].includes(query)) {
-        //             return true;
-        //         }
-        //     }
-        // });
-        // console.log('Filtered contacts:', filteredContacts);
-        // return filteredContacts;
-    })
-    //Print query
+        //Print query
+        return  res.send(contacts);
+    });
+   
 });
 
 
@@ -175,7 +118,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     // TODO: for each line in file, add to db
         if (newJsonObj && newJsonObj.length > 0){
             newJsonObj.forEach(contact => {
-                // console.log("JsonObj : ", jsonObj);
                 // console.log("newjsonObj", newJsonObj)
 
             if(!contact.email){
