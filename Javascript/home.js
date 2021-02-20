@@ -1,47 +1,4 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booky</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <div class="header">
-        <!-- <i class="fas fa-address-book fa-lg"></i>
-        <i class="fas fa-male fa-lg"></i>
-        <i class="fas fa-female fa-lg"></i> -->
-
-        <p>Contact-list</p>
-        <p>Male-Contacts</p>
-        <p>Female-Contacts</p>
-        <form action="/" method="post" enctype="multipart/form-data">
-            <input type="file" name="csv-file" accept=".csv, .xlsx, .xltx" >
-            <input type="submit" value="upload">
-        </form>
-    </div> 
-    <hr>
-
-    <form action="/search" method="GET">
-        <h2>Booky</h2>
-        <input type="text" name="search" id="searchText">
-        <button type="submit" name="search" id="search-btn">search</button>
-        
-        <div id="match-list"></div>
-    </form>
-    <div id="popup"></div>
-    <hr>
-    
-    <div class="footer">
-        <p>Logo</p>
-        <footer>Copyright @ ActiveSpaces</footer>
-        <button>Download</button>
-    </div>
-    
-</body>
-<script>
-    const url = "http://localhost:3000/search" ;
+const url = "http://localhost:3000/search" ;
     const contact = [];
 
     let searchText = document.getElementById("searchText");
@@ -117,7 +74,3 @@
         .catch( error => console.log('There was an error:',error))
 
     },false);
-
-         
-</script>
-</html>

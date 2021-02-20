@@ -32,7 +32,7 @@ app.get("/" , function(req, res){
     res.render("home");
 });
 
-//Search functionality
+//Endpoint for Search functionality on the home page
 app.get("/search", function(req, res){
     if (!req.query.q) {
         return;
@@ -54,7 +54,36 @@ app.get("/search", function(req, res){
    
 });
 
+//General search page
+app.get("/general-search",function(req, res){
+        BookycontactModel.find({}, function(err, contact){
+           if(err){ 
+               console.log(err);
+               throw err;
+           }
+           //Send all data from database
+           res.render("general-search", {contact: contact})
+       })    
+});
 
+
+//Endpoint fot general search
+app.get("/searchAll", function(req, res){
+    //Read the queries
+    const query = new RegExp(`.*${req.query.q}.*`, 'i');
+    const querySex = new RegExp(`.*${req.query.sex}.*`, 'i')
+    const queryAgeRange = req.query.age 
+    console.log(query, querySex, queryAgeRange);
+    const mongoQuery = { $and: [ { fName: query }, { lName: query }, {email: query}, {Sex: querySex} ] };
+    //Find queries in database
+    BookycontactModel.find(mongoQuery, function(err, contacts){
+        console.log(contacts);
+    })
+    //print results
+})
+
+
+//Post from the home page mainly to convert the csv to Json
 app.post('/', upload.single('csv-file'), (req, res, next) => {
     const file = req.file
     // console.log(file);
