@@ -18,7 +18,6 @@ const url = "http://localhost:3000/search" ;
             return 
         }
        
-
         fetch(newUrl)
         .then( response => {
         matchdiv.innerHTML = 'Waiting for response...';
