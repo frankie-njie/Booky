@@ -13,19 +13,20 @@
     <div class="contents">
         <div class="filters">
             <h3>Filter By</h3>
-            <input type="text">
+            <input id="filterText" type="text">
             <div class="sex">
-                <input type="checkbox">Male</input>
-                <input type="checkbox">Female</input>
+                <input id="maleCheckbox" type="checkbox">Male</input>
+                <input id="femaleCheckbox" type="checkbox">Female</input>
             </div>
             <div class="age">
-                <input type="range" name="" min="" max="">
+                <input id="ageRange" type="range" name="" min="" max="">
             </div>
-            <form>
-                <button id="filterBtn" class="filterBtn">Filter</button>
-                <button id="downloadFilter" class="downloadFilter">Download</button>
-            </form>
         </div>
+        <form>
+            <button id="filterBtn" class="filterBtn">Filter</button>
+            <button id="downloadFilter" class="downloadFilter">Download</button>
+        </form>
+  
 
         <!-- Find all data in database and display in the div -->
         <div class="filterResults">
@@ -39,19 +40,33 @@
                     <th>Sex</th>
                     <th>Age</th>
                 </tr>
-                <%contact.forEach(function(query){ %>
-                    <tr>
-                        <td><%= query.fName %></td>
-                        <td><%= query.lName %></td>
-                        <td><%= query.email %></td>
-                        <td><%= query.phoneNum %></td>
-                        <td><%= query.sex %></td>
-                        <td><%= query.age %></td>
-                    </tr>
-                    <% }); %>
+            <%contact.forEach(function(query){ %>
+                <tr>
+                    <td><%= query.fName %></td>
+                    <td><%= query.lName %></td>
+                    <td><%= query.email %></td>
+                    <td><%= query.phoneNum %></td>
+                    <td><%= query.sex %></td>
+                    <td><%= query.age %></td>
+                </tr>
+            <% }); %>
             </table>
         </div>
     </div>
 </body>
+<script>
+    const url = "http://localhost:3000/searchAll" ;
+
+    let filterText = document.getElementById("filterText");
+    let male = document.getElementById("maleCheckbox");
+    let female = document.getElementById("femaleCheckbox");
+    let ageRange = document.getElementById("ageRange");
+    let filterBtn = document.getElementById("filterText");
+    let downloadBtn = document.getElementById("downloadFilter");
+
+    
+
+
+</script>
 
 </html>

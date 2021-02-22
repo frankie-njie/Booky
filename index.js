@@ -77,7 +77,7 @@ app.get("/searchAll", function(req, res) {
     const queryAgeRange = req.query.age
     console.log(query, querySex, queryAgeRange);
 
-    const mongoQuery = ({ fName: query, lName: query, email: query, Sex: querySex, age: queryAgeRange });
+    const mongoQuery = ({ fName: query, lName: query, email: query}, {$or: [{Sex: querySex}, {age: queryAgeRange}] });
     console.log(mongoQuery);
     //Find queries in database
     BookycontactModel.find(mongoQuery, function(err, contacts) {
@@ -85,7 +85,7 @@ app.get("/searchAll", function(req, res) {
                 console.log(err);
                 throw err;
             } else {
-                console.log(contacts);
+                //console.log(contacts);
             }
         })
         //print results
