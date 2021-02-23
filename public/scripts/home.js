@@ -73,3 +73,8 @@ const url = "http://localhost:3000/search" ;
         .catch( error => console.log('There was an error:',error))
 
     },false);
+
+    searchBtn.addEventListener("onclick", function(){
+        console.log("you have hit the server");
+        //location("http://localhost:3000/generalsearch");
+    });

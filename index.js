@@ -56,7 +56,7 @@ app.get("/search", function(req, res) {
 });
 
 //General search page
-app.get("/general-search", function(req, res) {
+app.get("/generalsearch", function(req, res) {
     BookycontactModel.find({}, function(err, contact) {
         if (err) {
             console.log(err);
@@ -64,7 +64,7 @@ app.get("/general-search", function(req, res) {
         }
         //Send all data from database
         console.log(contact);
-        res.render("general-search", { contact: contact })
+        res.render("generalsearch", { contact: contact })
     })
 });
 
