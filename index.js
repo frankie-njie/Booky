@@ -40,7 +40,7 @@ app.get("/search", function(req, res) {
     }
     //Read the query
     const query = new RegExp(`.*${req.query.q}.*`, 'i');
-    const mongoQuery = { $or: [{ fName: query }, { lName: query }, { email: query }, { Sex: query }] };
+    const mongoQuery = { $or: [{ fName: query }, { lName: query }, { email: query }] };
 
     //Find the query
     BookycontactModel.find(mongoQuery, function(err, contacts) {
@@ -74,10 +74,27 @@ app.get("/searchAll", function(req, res) {
     //Read the queries
     const query = new RegExp(`.*${req.query.q}.*`, 'i');
     const querySex = new RegExp(`.*${req.query.sex}.*`, 'i')
-    const queryAgeRange = req.query.age
-    console.log(query, querySex, queryAgeRange);
-
-    const mongoQuery = ({ fName: query, lName: query, email: query}, {$or: [{Sex: querySex}, {age: queryAgeRange}] });
+    const queryMinAge = req.query.minAge
+    const queryMaxAge = req.query.maxAge
+    var mongoQuery = {}
+    if (req.query.q) {
+        mongoQuery['$or'] = [{fName: query}, {lName: query}, {email: query}]
+    }
+    if (req.query.sex){
+        mongoQuery['sex'] = querySex
+    }
+    // {age: {$gte: x, $lte: x}}
+    if (req.query.minAge || req.query.maxAge){
+        let ageRangeObj = {}
+        if (req.query.minAge){
+            ageRangeObj['$gte'] = queryMinAge
+        }
+        if (req.query.maxAge){
+           ageRangeObj['$lte'] = queryMaxAge
+        }
+        mongoQuery['age'] = ageRangeObj
+    }
+    
     console.log(mongoQuery);
     //Find queries in database
     BookycontactModel.find(mongoQuery, function(err, contacts) {
@@ -85,9 +102,21 @@ app.get("/searchAll", function(req, res) {
                 console.log(err);
                 throw err;
             } else {
-                //console.log(contacts);
+                res.send(contacts)
             }
         })
+
+    // const mongoQuery = { $or: [{fName: query}, {lName: query}, {email: query}, {Sex: querySex}, {age: queryAgeRange}] };
+    // console.log(mongoQuery);
+    // //Find queries in database
+    // BookycontactModel.find(mongoQuery, function(err, contacts) {
+    //         if (err) {
+    //             console.log(err);
+    //             throw err;
+    //         } else {
+    //             res.send(contacts)
+    //         }
+    //     })
         //print results
 })
 

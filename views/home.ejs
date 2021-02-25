@@ -23,13 +23,14 @@
     </div> 
     <hr>
 
-    <form action="/search" method="GET">
+    <button id="search-btn" onclick="searchClicked">press me</button>
+    <div action="/search" method="GET">
         <h2>Booky</h2>
         <input type="text" name="search" id="searchText">
-        <button type="submit" name="search" id="search-btn">search</button>
+        <a href="/generalsearch"><button>Search</button></a>
         
         <div id="match-list"></div>
-    </form>
+    </div>
     <div id="popup"></div>
     <hr>
     
