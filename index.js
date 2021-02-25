@@ -63,7 +63,7 @@ app.get("/generalsearch", function(req, res) {
             throw err;
         }
         //Send all data from database
-        console.log(contact);
+        //console.log(contact);
         res.render("generalsearch", { contact: contact })
     })
 });
@@ -94,8 +94,8 @@ app.get("/searchAll", function(req, res) {
         }
         mongoQuery['age'] = ageRangeObj
     }
-    
-    console.log(mongoQuery);
+    //console.log(mongoQuery);
+
     //Find queries in database
     BookycontactModel.find(mongoQuery, function(err, contacts) {
             if (err) {

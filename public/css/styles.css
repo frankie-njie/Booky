@@ -1,3 +1,12 @@
-body{
-   
+.match {
+    background-color: rgb(251, 251, 96)
+}
+
+#slider {
+    margin: 10px;
+    width: 250px;
+}
+
+.ui-widget-header {
+    background: blue !important
 }
