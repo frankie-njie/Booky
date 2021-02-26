@@ -85,6 +85,7 @@ const performSearch = function() {
             tbody.innerHTML = rows;
         })
 }
+
 const highlightMatches = function(str, query) {
     if (!str || !query) {
         return str

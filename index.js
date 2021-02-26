@@ -29,8 +29,43 @@ const storage = multer.diskStorage({
 
 let upload = multer({ storage });
 
-app.get("/", function(req, res) {
-    res.render("home");
+app.get("/", async function(req, res) {
+
+    let allContacts = async () => {
+        return await BookycontactModel.countDocuments({},  (err, val) => { 
+            if(err){
+                console.log(err);
+                throw err;
+            }
+            return val;
+        });
+    }
+    let maleContacts = async () => {
+        return await BookycontactModel.countDocuments({sex: "M"}, function(err, val){
+            if(err){
+                console.log(err);
+                throw err;
+            }
+            return val;
+        });
+    } 
+    let femaleContacts = async () => {
+        return await BookycontactModel.countDocuments({sex: "F"}, function(err, val){
+            if(err){
+                console.log(err);
+                throw err;
+            }
+            return val
+        });
+
+    }
+    const countAll = await allContacts();
+    const mCount = await maleContacts();
+    const fCount = await femaleContacts();
+    console.log( countAll, mCount, fCount);
+
+    res.render("home", {countAll: countAll, maleContacts: mCount, femaleContacts: fCount} );
+
 });
 
 //Endpoint for Search functionality on the home page
@@ -106,18 +141,6 @@ app.get("/searchAll", function(req, res) {
             }
         })
 
-    // const mongoQuery = { $or: [{fName: query}, {lName: query}, {email: query}, {Sex: querySex}, {age: queryAgeRange}] };
-    // console.log(mongoQuery);
-    // //Find queries in database
-    // BookycontactModel.find(mongoQuery, function(err, contacts) {
-    //         if (err) {
-    //             console.log(err);
-    //             throw err;
-    //         } else {
-    //             res.send(contacts)
-    //         }
-    //     })
-        //print results
 })
 
 
@@ -137,22 +160,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
     csv().fromFile(req.file.path)
         .then(function(jsonObj) {
             //console.log("jsonObj: ", jsonObj);
-
-            // TODO: Check for Required fields
-            // const reqFields = ['email', 'first name', 'last name', 'phone'];
-            // const CONTACT_NAMES = ['first name','last name'];
-
-            // const validateContactFields = arr => {
-            //     arr = arr.map(ele => ele.toLowerCase());
-            //     let status = true;
-
-            //     for (let index = 0; index < reqFields.length; index++) {
-            //         if(!arr.includes(reqFields[index])) {
-            //             status = false;
-            //             break;
-            //         }
-            //     }
-            // }
 
             const nameMappings = {
                 fName: ['first name', 'prenom', 'prénom', ],
@@ -203,30 +210,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
                         });
                     }
 
-
-                    //Compare jsonObj to array of required fields and map 
-                    //     if(validateContactFields(Object.keys(contact)) && contact.email ){
-                    //         const newContact = {}
-                    //         console.log("this one input", contact);
-
-                    //         Object.keys(contact).map(field => {
-                    //             const name = field.toLowerCase();
-
-                    //             if(CONTACT_NAMES.includes(name) ){
-                    //                 newContact[name[0] + "Name" ] = contact[field]
-                    //             }
-                    //             else newContact[name] = contact[field]
-                    //         })
-
-                    //         console.log("These are the contacts to be saved", newContact);
-                    //         return newContact
-                    //     }
-                    //     else console.log("These are the wrong input fields", contact)
-
-                    // })
-                    // jsonObj.forEach((contact, index) => {
-
-                    //console.log(contact);
 
                 });
             } else {

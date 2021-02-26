@@ -6,7 +6,7 @@ let matchdiv = document.getElementById("match-list");
 let popupDiv = document.getElementById("popup");
 let searchBtn = document.getElementById("search-btn")
 
-searchText.addEventListener("keyup", function(e) {
+searchText.addEventListener("keypress", function(e) {
     const newUrl = "http://localhost:3000/search?q=" + searchText.value.toString();
     console.log(searchText.value);
     // const urlParams = {q: searchText.value}
@@ -74,8 +74,7 @@ searchText.addEventListener("keyup", function(e) {
 
 }, false);
 
-searchBtn.addEventListener("onclick", function() {
+searchBtn.addEventListener("click", function() {
     console.log("you have hit the server");
     //location("http://localhost:3000/generalsearch");
 });
-

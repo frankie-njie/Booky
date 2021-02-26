@@ -13,9 +13,9 @@
         <i class="fas fa-male fa-lg"></i>
         <i class="fas fa-female fa-lg"></i> -->
 
-        <p>Contact-list</p>
-        <p>Male-Contacts</p>
-        <p>Female-Contacts</p>
+        <p>Contact-list <sup><%= countAll %></sup></p>
+        <p>Male-Contacts <sup><%= maleContacts %></sup></p>
+        <p>Female-Contacts <sup><%= femaleContacts %></sup></p>
         <form action="/" method="post" enctype="multipart/form-data">
             <input type="file" name="csv-file" accept=".csv, .xlsx, .xltx" >
             <input type="submit" value="upload">
@@ -23,7 +23,7 @@
     </div> 
     <hr>
 
-    <button id="search-btn" onclick="searchClicked">press me</button>
+    <button id="search-btn">press me</button>
     <div action="/search" method="GET">
         <h2>Booky</h2>
         <input type="text" name="search" id="searchText">
