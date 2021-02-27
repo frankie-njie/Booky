@@ -3,7 +3,44 @@ body{
     font-size: 18px;
     font-weight: 400;
 }
+h1{
+    text-align: center;
+    font-size: 2.5em;
+    padding-bottom: 2rem;
+}
+/* home page styles */
+.search-booky{
+    margin: 20% auto;
+}
+.search-group{
+    margin: auto;
+    width: 50%;
 
+}
+.icon{
+    margin-left: 0;
+} 
+i{
+    margin-left: 1.2em;
+}
+.match-list{
+    border: 1px solid;
+    border-radius: 4px;
+    text-align:  center;
+    margin: auto;
+    width: 50%;
+    /* height: 40%;
+    overflow: auto; */
+}
+.anchorlist{
+    text-decoration: none;
+}
+.list-item{
+    padding: 0.5rem;
+    list-style-type: none;
+}
+
+/* general search styles */
 .match {
     background-color: rgb(251, 251, 96)
 }

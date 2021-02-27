@@ -6,7 +6,7 @@ let matchdiv = document.getElementById("match-list");
 let popupDiv = document.getElementById("popup");
 let searchBtn = document.getElementById("search-btn")
 
-searchText.addEventListener("keypress", function(e) {
+searchText.addEventListener("keyup", function(e) {
     const newUrl = "http://localhost:3000/search?q=" + searchText.value.toString();
     console.log(searchText.value);
     // const urlParams = {q: searchText.value}
@@ -20,7 +20,6 @@ searchText.addEventListener("keypress", function(e) {
 
     fetch(newUrl)
         .then(response => {
-            matchdiv.innerHTML = 'Waiting for response...';
             if (response.ok) {
                 return response;
             }
@@ -36,6 +35,9 @@ searchText.addEventListener("keypress", function(e) {
                 let anchor = document.createElement("a")
                 let newList = document.createElement('li');
                 newList.textContent = (element.fName).toString() + ",  " + (element.email).toString();
+
+                anchor.classList.add('anchorlist')
+                newList.classList.add('list-item');
 
                 anchor.appendChild(newList)
                 anchor.href = '#';
@@ -76,5 +78,5 @@ searchText.addEventListener("keypress", function(e) {
 
 searchBtn.addEventListener("click", function() {
     console.log("you have hit the server");
-    //location("http://localhost:3000/generalsearch");
+    window.location.href ='/generalsearch';
 });

@@ -8,28 +8,33 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="header">
+    <div class="header navbar navbar-light">
         <!-- <i class="fas fa-address-book fa-lg"></i>
         <i class="fas fa-male fa-lg"></i>
         <i class="fas fa-female fa-lg"></i> -->
 
-        <p>Contact-list <sup><%= countAll %></sup></p>
-        <p>Male-Contacts <sup><%= maleContacts %></sup></p>
-        <p>Female-Contacts <sup><%= femaleContacts %></sup></p>
-        <form action="/" method="post" enctype="multipart/form-data">
-            <input type="file" name="csv-file" accept=".csv, .xlsx, .xltx" >
+        <div class="navicons navbar brand">
+            <i  class="fas fa-users fa-lg "><sup><%= countAll %></i> </sup>
+            <i class="fas fa-male fa-lg nav-item"><sup><%= maleContacts %></sup></i>
+            <i class="fas fa-female fa-lg nav-item"><sup><%= femaleContacts %></sup></i> 
+        </div>
+        <form action="/" class="form-inline" method="post" enctype="multipart/form-data">
+            <input type="file" class="" name="csv-file" accept=".csv, .xlsx, .xltx" >
             <input type="submit" value="upload">
         </form>
     </div> 
     <hr>
 
-    <button id="search-btn">press me</button>
-    <div action="/search" method="GET">
-        <h2>Booky</h2>
-        <input type="text" name="search" id="searchText">
-        <a href="/generalsearch"><button>Search</button></a>
-        
-        <div id="match-list"></div>
+    <div class="search-booky" action="/search" method="GET">
+        <h1>Booky</h1>
+        <div class="search-group input-group">
+            <input class="searchbar form-control" type="text" placeholder="Search by Name or email" name="search" id="searchText">
+            <div class="input-group-append">
+                <button id="search-btn" class="btn btn-primary"><i class="icon fas fa-search fa-lg"></i></button>
+            </div>
+        </div>
+          
+        <div id="match-list" class="match-list"></div>
     </div>
     <div id="popup"></div>
     <hr>
