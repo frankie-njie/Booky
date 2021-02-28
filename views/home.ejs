@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+   <div class="container">
     <div class="header navbar navbar-light">
         <!-- <i class="fas fa-address-book fa-lg"></i>
         <i class="fas fa-male fa-lg"></i>
@@ -23,6 +24,7 @@
             <input type="submit" value="upload">
         </form>
     </div> 
+   </div>
     <hr>
 
     <div class="search-booky" action="/search" method="GET">
@@ -39,10 +41,14 @@
     <div id="popup"></div>
     <hr>
     
-    <div class="footer">
-        <p>Logo</p>
-        <footer>Copyright @ ActiveSpaces</footer>
-        <button>Download</button>
+    <div class="container">
+        <div class="footer row justify-content-center">
+            <p class="footerconten col col-md-2">Logo</p>
+            <p class="footercontent col col-md-8">Copyright @ ActiveSpaces</p>
+            <button class="footercontent col col-md-2">Download</button>
+        </div>
+    </div>
+        
     </div>
     
 </body>

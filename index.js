@@ -62,7 +62,7 @@ app.get("/", async function(req, res) {
     const countAll = await allContacts();
     const mCount = await maleContacts();
     const fCount = await femaleContacts();
-    console.log( countAll, mCount, fCount);
+    //console.log( countAll, mCount, fCount);
 
     res.render("home", {countAll: countAll, maleContacts: mCount, femaleContacts: fCount} );
 

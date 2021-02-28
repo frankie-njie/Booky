@@ -15,11 +15,13 @@ searchText.addEventListener("keyup", function(e) {
     if (!searchText.value) {
         matchdiv.innerHTML = '';
         popupDiv.innerHTML = '';
+        removelist();
         return
     }
 
     fetch(newUrl)
         .then(response => {
+            matchdiv.innerHTML = 'Waiting for response...';
             if (response.ok) {
                 return response;
             }
@@ -27,17 +29,21 @@ searchText.addEventListener("keyup", function(e) {
         })
         .then(response => response.json())
         .then(data => {
-
+            matchdiv.style.display = "block"
             data.forEach(element => {
                 console.log(element.fName);
 
                 //Display of suggestion for the search
                 let anchor = document.createElement("a")
                 let newList = document.createElement('li');
-                newList.textContent = (element.fName).toString() + ",  " + (element.email).toString();
+                if (!element.fName) {
+                    newList.textContent = "No Name" + ",   " + (element.email).toString();
+                } else {
+                    newList.textContent = (element.fName).toString() + ",   " + (element.email).toString();
+                }
 
-                anchor.classList.add('anchorlist')
-                newList.classList.add('list-item');
+               newList.classList.add('list-item')
+               anchor.classList.add('anchorlist')
 
                 anchor.appendChild(newList)
                 anchor.href = '#';
@@ -80,3 +86,7 @@ searchBtn.addEventListener("click", function() {
     console.log("you have hit the server");
     window.location.href ='/generalsearch';
 });
+
+function removelist (){
+    matchdiv.style.display = "none"
+}

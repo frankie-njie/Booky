@@ -10,7 +10,7 @@ h1{
 }
 /* home page styles */
 .search-booky{
-    margin: 20% auto;
+    margin: 18% auto;
 }
 .search-group{
     margin: auto;
@@ -29,14 +29,15 @@ i{
     text-align:  center;
     margin: auto;
     width: 50%;
-    /* height: 40%;
-    overflow: auto; */
+    display: none;
+    height: 30%;
+    overflow: auto;
 }
 .anchorlist{
     text-decoration: none;
 }
 .list-item{
-    padding: 0.5rem;
+    padding: 0.4rem;
     list-style-type: none;
 }
 
