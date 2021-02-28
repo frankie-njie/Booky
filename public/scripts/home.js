@@ -52,8 +52,9 @@ searchText.addEventListener("keyup", function(e) {
 
                 // event listener to display details for each suggestion
                 anchor.addEventListener('click', ({ currentTarget }) => {
-                    const htmlPopup = `<div class=popup>
-                                d<img src="" alt="">
+                    showpopup();
+                    const htmlPopup = `<div class=popupitem>
+                                <img src="" alt="">
                                 <h5>Email</h5>
                                 <p>${element.email}</p>
 
@@ -69,8 +70,6 @@ searchText.addEventListener("keyup", function(e) {
 
                     //if(element.fName )
                     popupDiv.innerHTML = htmlPopup;
-                    console.log(currentTarget.id)
-                    console.log(popupDiv)
                 });
 
                 // console.log("All your details",email, fName, lName);
@@ -89,4 +88,7 @@ searchBtn.addEventListener("click", function() {
 
 function removelist (){
     matchdiv.style.display = "none"
+}
+function showpopup(){
+    popupDiv.style.visibility = "visible"
 }
