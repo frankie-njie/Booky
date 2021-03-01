@@ -1,3 +1,91 @@
 body{
-   
+    font-family: 'Poppins', 'sans serif';
+    font-size: 18px;
+    font-weight: 400;
+}
+h1{
+    text-align: center;
+    font-size: 2.5em;
+    padding-bottom: 2rem;
+}
+/* home page styles */
+.search-booky{
+    margin: 15% auto;
+}
+.search-group{
+    margin: auto;
+    width: 50%;
+
+}
+.icon{
+    margin-left: 0;
+} 
+i{
+    margin-left: 1.2em;
+}
+.match-list{
+    border: 1px solid #ced4da;
+    border-top: none;
+    border-radius: 4px;
+    text-align:  center;
+    margin: auto;
+    width: 50%;
+    display: none;
+    height: 25%;
+    overflow: auto;
+}
+.anchorlist{
+    text-decoration: none;
+}
+a{
+    color: #333;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+    /* color: #007bff; */
+    background-color: #e9e9e9;
+}
+.list-item{
+    padding: 0.4rem;
+    list-style-type: none;
+    border-bottom: 1px solid #d4d4d4;
+}
+.list-item :hover{
+    background-color: #e9e9e9
+}
+.popup {
+    position: absolute;
+    display: -webkit-box;
+    width: 32%;
+    margin: auto;
+    padding: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    height: 35%;
+    bottom: 30%;
+    left: 34%;
+    background-color: #fafafa;
+    box-shadow: 0px 1px 15px #afafae;
+    visibility: hidden;
+    z-index: 5;
+  }
+  .popupitem{
+    width: 95%;
+    margin: auto;
+    line-height: 2rem;
+  }
+
+/* general search styles */
+.match {
+    background-color: rgb(251, 251, 96)
+}
+
+#slider {
+    margin: 10px;
+    width: 250px;
+}
+
+.ui-widget-header {
+    background: blue !important
 }

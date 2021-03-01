@@ -1,0 +1,97 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booky Search</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script> src="scripts/search.js"</script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<style>
+   
+</style>
+
+<body>
+    <h1>Booky Contacts</h1>
+
+    <div class="contents">
+        <div class="filters">
+            <h3>Filter By</h3>
+            <div>
+                <label>Search first name, last name or email</label>
+                <input id="filterText" type="text">
+
+            </div>
+            <div class="sex">
+                <label>Sex</label>
+
+                <input id="maleCheckbox" value="" name="gender" type="radio">Any</input>
+                <input id="maleCheckbox" value="m" name="gender" type="radio">Male</input>
+                <input id="femaleCheckbox" value="f" name="gender" type="radio">Female</input>
+
+            </div>
+            <div class="age">
+                <!-- <input id="ageRange" type="range" name="" min="" max=""> -->
+                <div>
+                    Age range: <span id="minAge"> any</span> - <span id="maxAge">any</span> &nbsp; <input id="ageRangeCheckBox" type="checkbox">Enable
+                    <div id="slider"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button id="filterBtn" class="filterBtn">Filter</button>
+            <button id="downloadFilter" class="downloadFilter">Download</button>
+        </div>
+
+
+        <!-- Find all data in database and display in the div -->
+        <div class="filterResults">
+            <h3>Filtered Results</h3>
+            <table id="queryTable">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Sex</th>
+                    <th>Age</th>
+                </tr>
+                <tbody id="tbody">
+                    <%contact.forEach(function(query){ %>
+                        <tr id="queryRow">
+                            <td>
+                                <%= query.fName %>
+                            </td>
+                            <td>
+                                <%= query.lName %>
+                            </td>
+                            <td>
+                                <%= query.email %>
+                            </td>
+                            <td>
+                                <%= query.phoneNum %>
+                            </td>
+                            <td>
+                                <%= query.sex %>
+                            </td>
+                            <td>
+                                <%= query.age %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src="scripts/search.js">
+</script>
+
+</html>

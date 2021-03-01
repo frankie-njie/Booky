@@ -8,116 +8,49 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="header">
+   <div class="container">
+    <div class="header navbar navbar-light">
         <!-- <i class="fas fa-address-book fa-lg"></i>
         <i class="fas fa-male fa-lg"></i>
         <i class="fas fa-female fa-lg"></i> -->
 
-        <p>Contact-list</p>
-        <p>Male-Contacts</p>
-        <p>Female-Contacts</p>
-        <form action="/" method="post" enctype="multipart/form-data">
-            <input type="file" name="csv-file" accept=".csv, .xlsx, .xltx" >
+        <div class="navicons navbar brand">
+            <i  class="fas fa-users fa-lg "><sup><%= countAll %></i> </sup>
+            <i class="fas fa-male fa-lg nav-item"><sup><%= maleContacts %></sup></i>
+            <i class="fas fa-female fa-lg nav-item"><sup><%= femaleContacts %></sup></i> 
+        </div>
+        <form action="/" class="form-inline" method="post" enctype="multipart/form-data">
+            <input type="file" class="" name="csv-file" accept=".csv, .xlsx, .xltx" >
             <input type="submit" value="upload">
         </form>
     </div> 
+   </div>
     <hr>
 
-    <form action="/search" method="GET">
-        <h2>Booky</h2>
-        <input type="text" name="search" id="searchText">
-        <button type="submit" name="search" id="search-btn">search</button>
-        
-        <div id="match-list"></div>
-    </form>
-    <div id="popup"></div>
+    <div class="search-booky" action="/search" method="GET">
+        <h1>Booky</h1>
+        <div class="search-group input-group">
+            <input class="searchbar form-control" type="text" placeholder="Search by Name or email" name="search" id="searchText">
+            <div class="input-group-append">
+                <button id="search-btn" class="btn btn-primary"><i class="icon fas fa-search fa-lg"></i></button>
+            </div>
+        </div>
+          
+        <div id="match-list" class="match-list"></div>
+    </div>
+    <div id="popup" class="popup"></div>
     <hr>
     
-    <div class="footer">
-        <p>Logo</p>
-        <footer>Copyright @ ActiveSpaces</footer>
-        <button>Download</button>
+    <div class="container">
+        <div class="footer row justify-content-center">
+            <p class="footerconten col col-md-2">Logo</p>
+            <p class="footercontent col col-md-8">Copyright @ ActiveSpaces</p>
+            <button class="footercontent col col-md-2">Download</button>
+        </div>
+    </div>
+        
     </div>
     
 </body>
-<script>
-    const url = "http://localhost:3000/search" ;
-    const contact = [];
-
-    let searchText = document.getElementById("searchText");
-    let matchdiv = document.getElementById("match-list");
-    let popupDiv = document.getElementById("popup");
-    let searchBtn = document.getElementById("search-btn")
-
-    searchText.addEventListener("keyup", function(e){
-        const newUrl = "http://localhost:3000/search?q=" + searchText.value.toString() ;
-        console.log(searchText.value);
-        // const urlParams = {q: searchText.value}
-        // console.log(urlParams);
-        
-        if(!searchText.value){
-            matchdiv.innerHTML = '';
-            popupDiv.innerHTML = '';
-            return 
-        }
-       
-
-        fetch(newUrl)
-        .then( response => {
-        matchdiv.innerHTML = 'Waiting for response...';
-        if(response.ok) {
-        return response;
-        }
-        throw Error(response.statusText);
-        })
-        .then( response => response.json())
-        .then( data => {
-            
-                data.forEach(element => {               
-                console.log(element.fName);
-
-                //Display of suggestion for the search
-                let anchor = document.createElement("a")
-                let newList = document.createElement('li');
-                newList.textContent = (element.fName).toString() + ",  " +(element.email).toString();
-
-                anchor.appendChild(newList)
-                anchor.href = '#';
-                anchor.id = element._id;
-                matchdiv.appendChild(anchor);
-
-                // event listener to display details for each suggestion
-                anchor.addEventListener('click', ({currentTarget}) => {
-                    const htmlPopup = `<div class=popup>
-                                d<img src="" alt="">
-                                <h5>Email</h5>
-                                <p>${element.email}</p>
-
-                                <h5>First Name</h5>
-                                <p>${element.fName}</p>
-
-                                <h5>Last Name</h5>
-                                <p>${element.lName}</p>
-
-                                <h5>Phone Number</h5>
-                                <p>${element.phoneNum}</p>
-                                </div> `;
-
-                    //if(element.fName )
-                    popupDiv.innerHTML = htmlPopup;
-                    console.log(currentTarget.id)
-                    console.log(popupDiv)
-                });
-
-                    // console.log("All your details",email, fName, lName);
-            });
-            //onsole.log(data)
-           
-        })
-        .catch( error => console.log('There was an error:',error))
-
-    },false);
-
-         
-</script>
+<script src="scripts/home.js"></script>
 </html>

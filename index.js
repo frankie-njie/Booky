@@ -14,6 +14,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 
+
 // Store uploaded files
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -26,176 +27,196 @@ const storage = multer.diskStorage({
     }
 });
 
-let upload = multer({ storage});
+let upload = multer({ storage });
 
-app.get("/" , function(req, res){
-    res.render("home");
+app.get("/", async function(req, res) {
+
+    let allContacts = async () => {
+        return await BookycontactModel.countDocuments({},  (err, val) => { 
+            if(err){
+                console.log(err);
+                throw err;
+            }
+            return val;
+        });
+    }
+    let maleContacts = async () => {
+        return await BookycontactModel.countDocuments({sex: "M"}, function(err, val){
+            if(err){
+                console.log(err);
+                throw err;
+            }
+            return val;
+        });
+    } 
+    let femaleContacts = async () => {
+        return await BookycontactModel.countDocuments({sex: "F"}, function(err, val){
+            if(err){
+                console.log(err);
+                throw err;
+            }
+            return val
+        });
+
+    }
+    const countAll = await allContacts();
+    const mCount = await maleContacts();
+    const fCount = await femaleContacts();
+    //console.log( countAll, mCount, fCount);
+
+    res.render("home", {countAll: countAll, maleContacts: mCount, femaleContacts: fCount} );
+
 });
 
 //Endpoint for Search functionality on the home page
-app.get("/search", function(req, res){
+app.get("/search", function(req, res) {
     if (!req.query.q) {
         return;
     }
     //Read the query
     const query = new RegExp(`.*${req.query.q}.*`, 'i');
-    const mongoQuery = { $or: [ { fName: query }, { lName: query }, {email: query}, {Sex: query} ] };
+    const mongoQuery = { $or: [{ fName: query }, { lName: query }, { email: query }] };
 
     //Find the query
-    BookycontactModel.find(mongoQuery, function(err, contacts){
+    BookycontactModel.find(mongoQuery, function(err, contacts) {
         //console.log(contacts)
-        if (err){
+        if (err) {
             console.log(err);
             throw err;
         }
         //Print query
-        return  res.send(contacts);
+        return res.send(contacts);
     });
-   
+
 });
 
 //General search page
-app.get("/general-search",function(req, res){
-        BookycontactModel.find({}, function(err, contact){
-           if(err){ 
-               console.log(err);
-               throw err;
-           }
-           //Send all data from database
-           res.render("general-search", {contact: contact})
-       })    
+app.get("/generalsearch", function(req, res) {
+    BookycontactModel.find({}, function(err, contact) {
+        if (err) {
+            console.log(err);
+            throw err;
+        }
+        //Send all data from database
+        //console.log(contact);
+        res.render("generalsearch", { contact: contact })
+    })
 });
 
 
 //Endpoint fot general search
-app.get("/searchAll", function(req, res){
+app.get("/searchAll", function(req, res) {
     //Read the queries
     const query = new RegExp(`.*${req.query.q}.*`, 'i');
     const querySex = new RegExp(`.*${req.query.sex}.*`, 'i')
-    const queryAgeRange = req.query.age 
-    console.log(query, querySex, queryAgeRange);
-    const mongoQuery = { $and: [ { fName: query }, { lName: query }, {email: query}, {Sex: querySex} ] };
+    const queryMinAge = req.query.minAge
+    const queryMaxAge = req.query.maxAge
+    var mongoQuery = {}
+    if (req.query.q) {
+        mongoQuery['$or'] = [{fName: query}, {lName: query}, {email: query}]
+    }
+    if (req.query.sex){
+        mongoQuery['sex'] = querySex
+    }
+    // {age: {$gte: x, $lte: x}}
+    if (req.query.minAge || req.query.maxAge){
+        let ageRangeObj = {}
+        if (req.query.minAge){
+            ageRangeObj['$gte'] = queryMinAge
+        }
+        if (req.query.maxAge){
+           ageRangeObj['$lte'] = queryMaxAge
+        }
+        mongoQuery['age'] = ageRangeObj
+    }
+    //console.log(mongoQuery);
+
     //Find queries in database
-    BookycontactModel.find(mongoQuery, function(err, contacts){
-        console.log(contacts);
-    })
-    //print results
+    BookycontactModel.find(mongoQuery, function(err, contacts) {
+            if (err) {
+                console.log(err);
+                throw err;
+            } else {
+                res.send(contacts)
+            }
+        })
+
 })
 
 
 //Post from the home page mainly to convert the csv to Json
 app.post('/', upload.single('csv-file'), (req, res, next) => {
     const file = req.file
-    // console.log(file);
+        // console.log(file);
     if (!file) {
-      const error = new Error('Please upload a file')
-      error.httpStatusCode = 400
-      return next(error)
+        const error = new Error('Please upload a file')
+        error.httpStatusCode = 400
+        return next(error)
     }
 
     const wrongFormat = [];
 
     //Convert csv to JsonObject
     csv().fromFile(req.file.path)
-    .then(function (jsonObj) {
-    //console.log("jsonObj: ", jsonObj);
+        .then(function(jsonObj) {
+            //console.log("jsonObj: ", jsonObj);
 
-    // TODO: Check for Required fields
-    // const reqFields = ['email', 'first name', 'last name', 'phone'];
-    // const CONTACT_NAMES = ['first name','last name'];
+            const nameMappings = {
+                fName: ['first name', 'prenom', 'prénom', ],
+                lName: ['last name', 'family name', 'surnom', 'nom de famille', ],
+                email: ['email', 'mail', 'email address', 'address mail'],
+                phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
+                sex: ['sex', 'gender'],
+                age: ['age']
+            }
 
-    // const validateContactFields = arr => {
-    //     arr = arr.map(ele => ele.toLowerCase());
-    //     let status = true;
-
-    //     for (let index = 0; index < reqFields.length; index++) {
-    //         if(!arr.includes(reqFields[index])) {
-    //             status = false;
-    //             break;
-    //         }
-    //     }
-    // }
-
-    const nameMappings = {
-        fName: ['first name', 'prenom', 'prénom',],
-        lName: ['last name', 'family name', 'surnom', 'nom de famille',],
-        email: ['email', 'mail', 'email address', 'address mail' ],
-        phoneNum: ['phone', 'number', 'phone number', 'no', 'phone no', 'phone num'],
-        sex: ['sex', 'gender'],
-    }
-    
-    const newJsonObj = jsonObj.map((contactkey) => {
-        const result = {};
-        // For each individual contact, map each key using 'nameMapping'
-        for (const key in contactkey) {
-            const lowerCaseKey = key.toLowerCase();
-            // Search the nameMappings obj for a match
-            for (const prop in nameMappings) {
-                if (nameMappings[prop].includes(lowerCaseKey)) {
-                    result[prop] = contactkey[key];
-                    break;                 
+            const newJsonObj = jsonObj.map((contactkey) => {
+                const result = {};
+                // For each individual contact, map each key using 'nameMapping'
+                for (const key in contactkey) {
+                    const lowerCaseKey = key.toLowerCase();
+                    // Search the nameMappings obj for a match
+                    for (const prop in nameMappings) {
+                        if (nameMappings[prop].includes(lowerCaseKey)) {
+                            result[prop] = contactkey[key];
+                            break;
+                        }
+                    }
                 }
-            }
-        }
-        console.log(result);
-        return result;
-    });
-
-        //console.log("newjsonObj", newJsonObj)
-
-
-    // TODO: for each line in file, add to db
-        if (newJsonObj && newJsonObj.length > 0){
-            newJsonObj.forEach(contact => {
-                // console.log("newjsonObj", newJsonObj)
-
-            if(!contact.email){
-                wrongFormat.push(contact);
-                newJsonObj.slice(contact);
-                // console.log("This element does not have and email address", contact);
-                // console.log("This is the wrong format" ,wrongFormat);
-            }else{
-                const booky = new BookycontactModel(contact);
-
-               // console.log("this is contact",contact);
-
-                booky.save((err) => {
-                    if (err) throw err;
-                    else console.log("> Saved !");
-                });
-            }
-
-                
-                //Compare jsonObj to array of required fields and map 
-            //     if(validateContactFields(Object.keys(contact)) && contact.email ){
-            //         const newContact = {}
-            //         console.log("this one input", contact);
-
-            //         Object.keys(contact).map(field => {
-            //             const name = field.toLowerCase();
-
-            //             if(CONTACT_NAMES.includes(name) ){
-            //                 newContact[name[0] + "Name" ] = contact[field]
-            //             }
-            //             else newContact[name] = contact[field]
-            //         })
-
-            //         console.log("These are the contacts to be saved", newContact);
-            //         return newContact
-            //     }
-            //     else console.log("These are the wrong input fields", contact)
-
-            // })
-            // jsonObj.forEach((contact, index) => {
-
-            //console.log(contact);
-               
+                console.log(result);
+                return result;
             });
-        }else{
-            console.log("[x] Empty csv file !")
-        }
 
-    });
+            //console.log("newjsonObj", newJsonObj)
+
+
+            // TODO: for each line in file, add to db
+            if (newJsonObj && newJsonObj.length > 0) {
+                newJsonObj.forEach(contact => {
+                    // console.log("newjsonObj", newJsonObj)
+
+                    if (!contact.email) {
+                        wrongFormat.push(contact);
+                        newJsonObj.slice(contact);
+                        // console.log("This element does not have and email address", contact);
+                        // console.log("This is the wrong format" ,wrongFormat);
+                    } else {
+                        const booky = new BookycontactModel(contact);
+                        // console.log("this is contact",contact);
+
+                        booky.save((err) => {
+                            if (err) throw err;
+                            else console.log("> Saved !");
+                        });
+                    }
+
+
+                });
+            } else {
+                console.log("[x] Empty csv file !")
+            }
+
+        });
 
 
     res.send("your files have been saved");
@@ -210,6 +231,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
 // })
 
 // start listening
-app.listen(3000, function(){
+app.listen(3000, function() {
     console.log("Server started on port 3000");
 })
