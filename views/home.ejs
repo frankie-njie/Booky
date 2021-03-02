@@ -1,31 +1,64 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booky</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- <script>
+        src = "scripts/home.js"
+    </script> -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-   <div class="container">
     <div class="header navbar navbar-light">
-        <!-- <i class="fas fa-address-book fa-lg"></i>
-        <i class="fas fa-male fa-lg"></i>
-        <i class="fas fa-female fa-lg"></i> -->
 
         <div class="navicons navbar brand">
-            <i  class="fas fa-users fa-lg "><sup><%= countAll %></i> </sup>
-            <i class="fas fa-male fa-lg nav-item"><sup><%= maleContacts %></sup></i>
-            <i class="fas fa-female fa-lg nav-item"><sup><%= femaleContacts %></sup></i> 
+            <i class="fas fa-users fa-2x "><sup class="badge badge-primary"><%= countAll %></i> </sup>
+            <i class="fas fa-male fa-2x nav-item"><sup class="badge badge-primary"><%= maleContacts %></sup></i>
+            <i class="fas fa-female fa-2x nav-item"><sup class="badge badge-primary"><%= femaleContacts %></sup></i>
         </div>
-        <form action="/" class="form-inline" method="post" enctype="multipart/form-data">
-            <input type="file" class="" name="csv-file" accept=".csv, .xlsx, .xltx" >
+        <!-- <form action="/" class="custom-file" method="post" enctype="multipart/form-data">
+            <input type="file" class="custom-file-input" name="csv-file" accept=".csv, .xlsx, .xltx" >
+            <label class="custom-file-label" for="file"></label>
             <input type="submit" value="upload">
-        </form>
+        </form> -->
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Launch Modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="file-loading">
+                            <input id="input-b9" name="input-b9[]" multiple type="file" >
+                        </div>
+                        <div id="kartik-file-errors"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" title="Your custom upload logic">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div> 
-   </div>
-    <hr>
 
     <div class="search-booky" action="/search" method="GET">
         <h1>Booky</h1>
@@ -39,18 +72,22 @@
         <div id="match-list" class="match-list"></div>
     </div>
     <div id="popup" class="popup"></div>
-    <hr>
+    <!-- <hr> -->
     
-    <div class="container">
-        <div class="footer row justify-content-center">
-            <p class="footerconten col col-md-2">Logo</p>
-            <p class="footercontent col col-md-8">Copyright @ ActiveSpaces</p>
-            <button class="footercontent col col-md-2">Download</button>
+    <div class="footer container-fluid">
+        <div class="row justify-content-center ">
+            <div class="col-md-2"><p class="footercontent col-md-2">Logo</p></div>
+            <div class="col-md-8"><p class="footercontent align-items-center">Copyright @ ActiveSpaces</p></div>
+            <div class="col-md-2">
+                <button class="btn btn-outline-dark">Download</button>
+            </div>
         </div>
     </div>
         
     </div>
-    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="scripts/home.js"></script>  
 </body>
-<script src="scripts/home.js"></script>
 </html>
