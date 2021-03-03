@@ -92,7 +92,7 @@ app.get("/search", function(req, res) {
 
 //General search page
 app.get("/generalsearch", function(req, res) {
-    BookycontactModel.find({}, function(err, contact) {
+    BookycontactModel.find({skip:10 , limit:5}, function(err, contact) {
         if (err) {
             console.log(err);
             throw err;

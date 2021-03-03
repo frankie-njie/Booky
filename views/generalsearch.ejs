@@ -22,7 +22,7 @@
     <h1>Booky Contacts</h1>
         <div class="container-fluid">
         <div class="row contents">
-            <div class="col-md-4 filters">
+            <div class="col-md-3 filters">
                 <h3>Filter By</h3>
                     <div class="form-group">
                         <label>Search first name, last name or email</label>
@@ -66,17 +66,19 @@
     
     
             <!-- Find all data in database and display in the div -->
-            <div class="col-md-8 filterResults">
+            <div class="col-md-9 filterResults">
                 <h3>Filtered Results</h3>
-                <table id="queryTable">
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Phone Number</th>
-                        <th>Sex</th>
-                        <th>Age</th>
-                    </tr>
+                <table id="queryTable" class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Sex</th>
+                            <th>Age</th>
+                        </tr>
+                    </thead>
                     <tbody id="tbody">
                         <%contact.forEach(function(query){ %>
                             <tr id="queryRow">

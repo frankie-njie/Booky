@@ -31,7 +31,7 @@ $("document").ready(function() {
 
 const url = "http://localhost:3000/searchAll";
 
-
+// console.log(contact);
 let filterText = document.getElementById("filterText");
 let male = document.getElementById("maleCheckbox");
 let female = document.getElementById("femaleCheckbox");

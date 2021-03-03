@@ -27,7 +27,7 @@ searchText.addEventListener("keyup", function(e) {
 
     fetch(newUrl)
         .then(response => {
-            matchdiv.innerHTML = 'Waiting for response...';
+            matchdiv.innerHTML = '';
             if (response.ok) {
                 return response;
             }

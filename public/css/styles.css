@@ -100,8 +100,8 @@ a:hover{
 }
 
 #slider {
-    margin: 10px;
-    width: 250px;
+    margin: 10px 0;
+    width: 100%;
 }
 
 .ui-widget-header {
