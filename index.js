@@ -91,22 +91,43 @@ app.get("/search", function(req, res) {
 });
 
 //General search page
-app.get("/generalsearch", function(req, res) {
-    BookycontactModel.find({skip:10 , limit:5}, function(err, contact) {
-        if (err) {
-            console.log(err);
-            throw err;
-        }
-        //Send all data from database
-        //console.log(contact);
-        res.render("generalsearch", { contact: contact })
-    })
+app.get("/generalsearch", async function(req, res) {
+    let {page = req.params.page || 1, limit = 10} = req.query
+    // const page = res.query.page
+    // const contactsPerPage = 10
+    
+    if (page < 1) {
+        page = 1
+    }
+    const contact = await BookycontactModel.find()
+    .limit(limit * 1)
+    .skip((page - 1) * limit)
+
+    const total = await BookycontactModel.countDocuments()
+
+    res.render("generalsearch", { contact: contact, total: total, totalPages: Math.ceil(total/limit) })
+    //console.log(post);
+
+    // BookycontactModel.find({}, function(err, contact) {
+    //     if (err) {
+    //         console.log(err);
+    //         throw err;
+    //     }
+    //     //Send all data from database
+    //     //console.log(contact);
+    //     res.render("generalsearch", { contact: contact })
+    // })
 });
 
 
 //Endpoint fot general search
 app.get("/searchAll", function(req, res) {
     //Read the queries
+    let {page = req.params.page || 1, limit = 10} = req.query
+    if (page < 1) {
+        page = 1
+    }
+
     const query = new RegExp(`.*${req.query.q}.*`, 'i');
     const querySex = new RegExp(`.*${req.query.sex}.*`, 'i')
     const queryMinAge = req.query.minAge
@@ -129,7 +150,7 @@ app.get("/searchAll", function(req, res) {
         }
         mongoQuery['age'] = ageRangeObj
     }
-    //console.log(mongoQuery);
+    //console.log(mongoQuery);    
 
     //Find queries in database
     BookycontactModel.find(mongoQuery, function(err, contacts) {
@@ -139,7 +160,8 @@ app.get("/searchAll", function(req, res) {
             } else {
                 res.send(contacts)
             }
-        })
+        }).limit(limit * 1)
+        .skip((page - 1) * limit)
 
 })
 

@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<style>
-   
-</style>
-
 <body>
     <h1>Booky Contacts</h1>
         <div class="container-fluid">
@@ -68,49 +64,65 @@
             <!-- Find all data in database and display in the div -->
             <div class="col-md-9 filterResults">
                 <h3>Filtered Results</h3>
-                <table id="queryTable" class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Sex</th>
-                            <th>Age</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody">
-                        <%contact.forEach(function(query){ %>
-                            <tr id="queryRow">
-                                <td>
-                                    <%= query.fName %>
-                                </td>
-                                <td>
-                                    <%= query.lName %>
-                                </td>
-                                <td>
-                                    <%= query.email %>
-                                </td>
-                                <td>
-                                    <%= query.phoneNum %>
-                                </td>
-                                <td>
-                                    <%= query.sex %>
-                                </td>
-                                <td>
-                                    <%= query.age %>
-                                </td>
+                <div class="table-div">
+                    <table id="queryTable" class="table table-condensed table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Sex</th>
+                                <th>Age</th>
                             </tr>
-                            <% }); %>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="tbody" class="data-table"> 
+                            <%contact.forEach(function(query){ %>
+                                <tr id="queryRow">
+                                    <td>
+                                        <%= query.fName %>
+                                    </td>
+                                    <td>
+                                        <%= query.lName %>
+                                    </td>
+                                    <td>
+                                        <%= query.email %>
+                                    </td>
+                                    <td>
+                                        <%= query.phoneNum %>
+                                    </td>
+                                    <td>
+                                        <%= query.sex %>
+                                    </td>
+                                    <td>
+                                        <%= query.age %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-2 d-flex justify-content-between">
+                    <div class="">
+                        <button id="firstPage" class="btn btn-outline-dark"><i class="fas fa-step-backward"></i></button>
+                        <button id="previousPage" class="btn btn-outline-dark"><i class="fas fa-arrow-left"></i></button>
+                        page <input id="pageNumber" class="" min="1" max=<%=totalPages%> class="page-number-input" type="number" value="1"/> of <%=totalPages%>
+                        <button id="nextPage" class="btn btn-outline-dark"><i class="fas fa-arrow-right"></i></button>
+                        <button id="lastPage" class="btn btn-outline-dark"><i class="fas fa-step-forward"></i></button>
+                    </div>
+                   <div>
+                        <span id="pagination-total" style="display: none;"><%=total%></span>
+                        <span id="pagination-footnote"></span>
+                   </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- <%- include('partials/footer'); -%> -->
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="scripts/search.js">
-</script>
+<script src="scripts/search.js"></script>
 </body>
 
 

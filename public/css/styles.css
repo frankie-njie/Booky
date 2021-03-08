@@ -15,7 +15,7 @@ sup{
 /* home page styles */
 .header{
     border-bottom: 1px;
-    box-shadow: 0px 0px 10px #cecccc;
+    box-shadow: 0px 0px 20px #cecccc;
     height: 10%;
 }
 .navicons{
@@ -101,7 +101,7 @@ a:hover{
 
 #slider {
     margin: 10px 0;
-    width: 100%;
+    width: 100%;    
 }
 
 .ui-widget-header {
@@ -121,8 +121,20 @@ a:hover{
     width: 100px;
 }
 .row{
-    padding: 14px 0;
+    padding: 14px 0 0;
 }
 p.footercontent{
     text-align: center;
 }
+.table-div {
+    height:570px;
+    overflow-y: scroll;
+    border-bottom: solid #e0e0e0;
+}
+thead tr th {
+    position: sticky;
+    top: 0;
+  }
+  .page-number-input {
+      width: 50
+  }
