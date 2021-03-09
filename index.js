@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const ejs = require('ejs');
 const multer = require('multer');
 const csv = require('csvtojson');
+const fs = require('fs');
+// const { Parser } = require('json2csv');
 //const https = require('https');
 // const path = require('path');
 
@@ -163,6 +165,38 @@ app.get("/searchAll", function(req, res) {
         }).limit(limit * 1)
         .skip((page - 1) * limit)
 
+});
+
+app.get('/download', async function(req, res){
+    let allContact = await BookycontactModel.find({}, (err, contact) => {
+        if(err){
+            console.log(err);
+            throw err;
+        }else{
+            return contact
+        }
+    });
+
+    let keys = ["fName", "lName", "email", "phoneNum", "age"] 
+    keys
+    allVars = "";
+
+    allContact.forEach(contact => {
+        var values = []
+        keys.forEach(key => {
+           value = contact[key];
+           values.push(value)
+        });
+        let str = values.toString() + "\n"
+        allVars += str;
+    })
+    let result = keys.toString() + "\n"  + allVars;
+    //res.send(result)
+
+    fs.writeFile('./allcontacts.csv', result, function (err) {
+        if (err) return console.log(err);
+        res.download("./allcontacts.csv");
+      });      
 })
 
 
@@ -231,7 +265,6 @@ app.post('/', upload.single('csv-file'), (req, res, next) => {
                             else console.log("> Saved !");
                         });
                     }
-
 
                 });
             } else {
