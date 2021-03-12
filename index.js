@@ -134,7 +134,7 @@ app.get("/searchAll", function(req, res) {
     const querySex = new RegExp(`.*${req.query.sex}.*`, 'i')
     const queryMinAge = req.query.minAge
     const queryMaxAge = req.query.maxAge
-    var mongoQuery = {}
+    let mongoQuery = {}
     if (req.query.q) {
         mongoQuery['$or'] = [{fName: query}, {lName: query}, {email: query}]
     }
@@ -168,20 +168,46 @@ app.get("/searchAll", function(req, res) {
 });
 
 app.get('/download', async function(req, res){
-    let allContact = await BookycontactModel.find({}, (err, contact) => {
-        if(err){
-            console.log(err);
-            throw err;
-        }else{
-            return contact
-        }
-    });
+    const query = new RegExp(`.*${req.query.q}.*`, 'i');
+    const querySex = new RegExp(`.*${req.query.sex}.*`, 'i')
+    const queryMinAge = req.query.minAge
+    const queryMaxAge = req.query.maxAge
+    let mongoQuery = {}
 
-    let keys = ["fName", "lName", "email", "phoneNum", "age"] 
-    keys
+    if (req.query.q) {
+        mongoQuery['$or'] = [{fName: query}, {lName: query}, {email: query}]
+    }
+    if (req.query.sex){
+        mongoQuery['sex'] = querySex
+    }
+    // {age: {$gte: x, $lte: x}}
+    if (req.query.minAge || req.query.maxAge){
+        let ageRangeObj = {}
+        if (req.query.minAge){
+            ageRangeObj['$gte'] = queryMinAge
+        }
+        if (req.query.maxAge){
+           ageRangeObj['$lte'] = queryMaxAge
+        }
+        mongoQuery['age'] = ageRangeObj
+    } 
+
+    //Find queries in database
+    const getContacts = await BookycontactModel.find(mongoQuery, function(err, contacts) {
+            if (err) {
+                console.log(err);
+                throw err;
+            } else {
+                // res.send(contacts)
+                return contacts;
+            }
+        })
+        //console.log(getContacts);
+
+    let keys = ["fName", "lName", "email", "phoneNum", "sex", "age"];
     allVars = "";
 
-    allContact.forEach(contact => {
+    getContacts.forEach(contact => {
         var values = []
         keys.forEach(key => {
            value = contact[key];
@@ -193,11 +219,12 @@ app.get('/download', async function(req, res){
     let result = keys.toString() + "\n"  + allVars;
     //res.send(result)
 
-    fs.writeFile('./allcontacts.csv', result, function (err) {
+    fs.writeFile('./contacts.csv', result, function (err) {
         if (err) return console.log(err);
-        res.download("./allcontacts.csv");
+        res.download("./contacts.csv");
       });      
-})
+
+});
 
 
 //Post from the home page mainly to convert the csv to Json

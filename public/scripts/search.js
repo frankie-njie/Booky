@@ -72,6 +72,7 @@ $("document").ready(function() {
 })
 
 const url = "http://localhost:3000/searchAll";
+const downloadurl = "http://localhost:3000/download"
 
 // console.log(contact);
 let filterText = document.getElementById("filterText");
@@ -85,7 +86,42 @@ let tbody = document.getElementById("tbody")
 filterText.addEventListener("keyup", function() {
     currentPageNumber = 1
     performSearch()
+});
+
+downloadBtn.addEventListener("click", function () {
+    let sex = ""
+    $('input[name ="gender"]').each(function() {
+        if (this.checked) {
+            sex = this.value
+        }
+    })
+    let ageRange = $("#slider").slider("option", "values");
+    if ($("#slider").slider("option", "disabled")) {
+        ageRange = ["", ""]
+    }
+    const newDownloadUrl = downloadurl + `?q=${filterText.value}&sex=${sex}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
+    fetch(newDownloadUrl)
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        throw Error(response.statusText);
+    })
+    .then(async response => {
+        let text = await response.text();
+        download("contacts.csv", text);
+    })
 })
+
+function download(filename, text){
+    let element = document.createElement('a');
+    element.setAttribute('href', `data:text/csv;charset=uft-8,` + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
 
 const performSearch = function() {
     let sex = ""
