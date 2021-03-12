@@ -1,10 +1,17 @@
+$('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').trigger('focus')
+});
+  
+
 const url = "http://localhost:3000/search";
 const contact = [];
 
 let searchText = document.getElementById("searchText");
 let matchdiv = document.getElementById("match-list");
 let popupDiv = document.getElementById("popup");
-let searchBtn = document.getElementById("search-btn")
+let searchBtn = document.getElementById("search-btn");
+let downloadAll = document.getElementById("downloadAll");
+
 
 searchText.addEventListener("keyup", function(e) {
     const newUrl = "http://localhost:3000/search?q=" + searchText.value.toString();
@@ -21,7 +28,7 @@ searchText.addEventListener("keyup", function(e) {
 
     fetch(newUrl)
         .then(response => {
-            matchdiv.innerHTML = 'Waiting for response...';
+            matchdiv.innerHTML = '';
             if (response.ok) {
                 return response;
             }
@@ -54,7 +61,7 @@ searchText.addEventListener("keyup", function(e) {
                 anchor.addEventListener('click', ({ currentTarget }) => {
                     showpopup();
                     const htmlPopup = `<div class=popupitem>
-                                <img src="" alt="">
+                                <i id="close-form" class="fas fa-times fa-lg close-form"></i>
                                 <h5>Email</h5>
                                 <p>${element.email}</p>
 
@@ -70,9 +77,12 @@ searchText.addEventListener("keyup", function(e) {
 
                     //if(element.fName )
                     popupDiv.innerHTML = htmlPopup;
-                });
-
-                // console.log("All your details",email, fName, lName);
+                    let closeForm = document.getElementsByClassName("close-form");
+                    closeForm[0].onclick  = () => {
+                        popupDiv.style.visibility = "hidden"
+                    };  
+                });    
+                // console.log("All your details",email, fName, lName);                  
             });
             //onsole.log(data)
 
@@ -81,10 +91,37 @@ searchText.addEventListener("keyup", function(e) {
 
 }, false);
 
+downloadAll.addEventListener("click", function () {
+
+    const downloadUrl =  "http://localhost:3000/download"
+    fetch(downloadUrl)
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        throw Error(response.statusText);
+    })
+    .then(async response => {
+        let text = await response.text();
+        download("contacts.csv", text);
+    })
+})
+
+function download(filename, text){
+    let element = document.createElement('a');
+    element.setAttribute('href', `data:text/csv;charset=uft-8,` + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
+
 searchBtn.addEventListener("click", function() {
     console.log("you have hit the server");
     window.location.href ='/generalsearch';
-});
+});      
 
 function removelist (){
     matchdiv.style.display = "none"
@@ -92,3 +129,12 @@ function removelist (){
 function showpopup(){
     popupDiv.style.visibility = "visible"
 }
+// $('document').ready(function() {
+//     $("#input-b9").fileinput({
+//         showPreview: false,
+//         showUpload: false,
+//         elErrorContainer: '#kartik-file-errors',
+//         allowedFileExtensions: ["jpg", "png", "gif"],
+//         uploadUrl: '/site/file-upload-single'
+//     });
+// });

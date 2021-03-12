@@ -1,34 +1,8 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booky</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-   <div class="container">
-    <div class="header navbar navbar-light">
-        <!-- <i class="fas fa-address-book fa-lg"></i>
-        <i class="fas fa-male fa-lg"></i>
-        <i class="fas fa-female fa-lg"></i> -->
-
-        <div class="navicons navbar brand">
-            <i  class="fas fa-users fa-lg "><sup><%= countAll %></i> </sup>
-            <i class="fas fa-male fa-lg nav-item"><sup><%= maleContacts %></sup></i>
-            <i class="fas fa-female fa-lg nav-item"><sup><%= femaleContacts %></sup></i> 
-        </div>
-        <form action="/" class="form-inline" method="post" enctype="multipart/form-data">
-            <input type="file" class="" name="csv-file" accept=".csv, .xlsx, .xltx" >
-            <input type="submit" value="upload">
-        </form>
-    </div> 
-   </div>
-    <hr>
+<%- include('partials/header'); -%>
 
     <div class="search-booky" action="/search" method="GET">
         <h1>Booky</h1>
+        <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p> -->
         <div class="search-group input-group">
             <input class="searchbar form-control" type="text" placeholder="Search by Name or email" name="search" id="searchText">
             <div class="input-group-append">
@@ -39,18 +13,5 @@
         <div id="match-list" class="match-list"></div>
     </div>
     <div id="popup" class="popup"></div>
-    <hr>
-    
-    <div class="container">
-        <div class="footer row justify-content-center">
-            <p class="footerconten col col-md-2">Logo</p>
-            <p class="footercontent col col-md-8">Copyright @ ActiveSpaces</p>
-            <button class="footercontent col col-md-2">Download</button>
-        </div>
-    </div>
-        
-    </div>
-    
-</body>
-<script src="scripts/home.js"></script>
-</html>
+
+<%- include('partials/footer'); -%>

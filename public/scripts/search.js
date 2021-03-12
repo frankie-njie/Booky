@@ -1,3 +1,4 @@
+var currentPageNumber = 1
 $("document").ready(function() {
     $("#ageRangeCheckBox").change(function() {
         if (this.checked) {
@@ -7,12 +8,14 @@ $("document").ready(function() {
         }
     })
     $('input[name ="gender"]').change(function() {
+        currentPageNumber = 1
         performSearch()
     })
     $("#slider").slider({
         range: true,
         min: 0,
         max: 100,
+        values: [10,25],
         disabled: true,
         change: function(event, ui) {
             $("#minAge").html(ui.values[0])
@@ -21,17 +24,57 @@ $("document").ready(function() {
         }
     });
 
-    $("#slider").slider("option", "values", [10, 25]);
+    //$("#slider").slider("option", "values", [10, 25]);
 
     $("#filterBtn").click(function() {
         performSearch()
     })
 
+    $("#pageNumber").change(function(){
+        currentPageNumber = this.value
+        performSearch()
+    })
+
+    let total = $("#pagination-total").text()
+    totalPages = Math.ceil(total / 10)
+    let from = ((currentPageNumber -1) * 10) + 1
+    let paginationFootNote = `Displaying ${from} to ${(from + 9)} of ${total}`
+    $("#pagination-footnote").text(paginationFootNote)
+
+    $("#firstPage").click(function(){
+        currentPageNumber = 1
+        $("#pageNumber").val(1)
+        $("#pageNumber").change()
+
+    })
+    $("#previousPage").click(function(){
+        if (currentPageNumber > 1) {
+            currentPageNumber--
+        }
+        $("#pageNumber").val(currentPageNumber)
+        $("#pageNumber").change()
+
+    })
+    $("#nextPage").click(function(){
+        if (currentPageNumber < totalPages){
+            currentPageNumber++
+        }
+        $("#pageNumber").val(currentPageNumber)
+        $("#pageNumber").change()
+
+    })
+    $("#lastPage").click(function(){
+        currentPageNumber = totalPages
+        $("#pageNumber").val(currentPageNumber)
+        $("#pageNumber").change()
+    })
+
 })
 
 const url = "http://localhost:3000/searchAll";
+const downloadurl = "http://localhost:3000/download"
 
-
+// console.log(contact);
 let filterText = document.getElementById("filterText");
 let male = document.getElementById("maleCheckbox");
 let female = document.getElementById("femaleCheckbox");
@@ -41,8 +84,44 @@ let downloadBtn = document.getElementById("downloadFilter");
 let tbody = document.getElementById("tbody")
 
 filterText.addEventListener("keyup", function() {
+    currentPageNumber = 1
     performSearch()
+});
+
+downloadBtn.addEventListener("click", function () {
+    let sex = ""
+    $('input[name ="gender"]').each(function() {
+        if (this.checked) {
+            sex = this.value
+        }
+    })
+    let ageRange = $("#slider").slider("option", "values");
+    if ($("#slider").slider("option", "disabled")) {
+        ageRange = ["", ""]
+    }
+    const newDownloadUrl = downloadurl + `?q=${filterText.value}&sex=${sex}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`;
+    fetch(newDownloadUrl)
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        throw Error(response.statusText);
+    })
+    .then(async response => {
+        let text = await response.text();
+        download("contacts.csv", text);
+    })
 })
+
+function download(filename, text){
+    let element = document.createElement('a');
+    element.setAttribute('href', `data:text/csv;charset=uft-8,` + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
 
 const performSearch = function() {
     let sex = ""
@@ -56,7 +135,9 @@ const performSearch = function() {
         ageRange = ["", ""]
     }
 
-    const newUrl = url + `?q=${filterText.value}&sex=${sex}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}`
+    console.log('current page number: ', currentPageNumber)
+
+    const newUrl = url + `?q=${filterText.value}&sex=${sex}&minAge=${ageRange[0]}&maxAge=${ageRange[1]}&page=${currentPageNumber}`
     fetch(newUrl)
         .then(response => {
             if (response.ok) {
@@ -83,6 +164,10 @@ const performSearch = function() {
 
             })
             tbody.innerHTML = rows;
+            let total = $("#pagination-total").text()
+            let from = ((currentPageNumber -1) * 10) + 1
+            let paginationFootNote = `Displaying ${from} to ${(from + data.length - 1)} of ${total}`
+            $("#pagination-footnote").text(paginationFootNote)
         })
 }
 
