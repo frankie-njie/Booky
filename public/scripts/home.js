@@ -1,16 +1,17 @@
 $('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
-  })
+});
   
+
 const url = "http://localhost:3000/search";
 const contact = [];
 
 let searchText = document.getElementById("searchText");
 let matchdiv = document.getElementById("match-list");
 let popupDiv = document.getElementById("popup");
-let searchBtn = document.getElementById("search-btn")
-if(searchText){ 
-}
+let searchBtn = document.getElementById("search-btn");
+let downloadAll = document.getElementById("downloadAll");
+
 
 searchText.addEventListener("keyup", function(e) {
     const newUrl = "http://localhost:3000/search?q=" + searchText.value.toString();
@@ -89,6 +90,33 @@ searchText.addEventListener("keyup", function(e) {
         .catch(error => console.log('There was an error:', error))
 
 }, false);
+
+downloadAll.addEventListener("click", function () {
+
+    const downloadUrl =  "http://localhost:3000/download"
+    fetch(downloadUrl)
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        throw Error(response.statusText);
+    })
+    .then(async response => {
+        let text = await response.text();
+        download("contacts.csv", text);
+    })
+})
+
+function download(filename, text){
+    let element = document.createElement('a');
+    element.setAttribute('href', `data:text/csv;charset=uft-8,` + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
 
 searchBtn.addEventListener("click", function() {
     console.log("you have hit the server");
