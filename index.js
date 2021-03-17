@@ -5,9 +5,6 @@ const ejs = require('ejs');
 const multer = require('multer');
 const csv = require('csvtojson');
 const fs = require('fs');
-// const { Parser } = require('json2csv');
-//const https = require('https');
-// const path = require('path');
 
 const BookycontactModel = require("./models/BookyContact");
 
@@ -141,7 +138,6 @@ app.get("/searchAll", function(req, res) {
     if (req.query.sex){
         mongoQuery['sex'] = querySex
     }
-    // {age: {$gte: x, $lte: x}}
     if (req.query.minAge || req.query.maxAge){
         let ageRangeObj = {}
         if (req.query.minAge){
@@ -180,7 +176,6 @@ app.get('/download', async function(req, res){
     if (req.query.sex){
         mongoQuery['sex'] = querySex
     }
-    // {age: {$gte: x, $lte: x}}
     if (req.query.minAge || req.query.maxAge){
         let ageRangeObj = {}
         if (req.query.minAge){
