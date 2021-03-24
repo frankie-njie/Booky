@@ -10,37 +10,39 @@
         <div class="row contents">
             <div class="col-md-3 filters">
                 <h3>Filter By</h3>
-                    <div class="form-group">
-                        <label>Search first name, last name or email</label>
-                        <input id="filterText" class="form-control" type="text">
-        
+                    <div class="form-group">                     
+                        <input id="filterText" class="form-control" type="text" placeholder="Search first name, last name or email">     
                     </div>
                     <div class="sex">
-                        <label><strong>Sex</strong></label>
-        
-                        <div class="form-check">
-                            <input id="anyCheckbox" class="form-check-input" value="" name="gender" type="radio">
-                            <label for="anyChekcbox" class="form-check-label">Any</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="maleCheckbox" class="form-check-input" value="m" name="gender" type="radio">
-                            <label for="maleChekcbox" class="form-check-label">Male</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="anyCheckbox" class="form-check-input" value="f" name="gender" type="radio">
-                            <label for="femaleChekcbox" class="form-check-label">Female</label>
-                        </div>
+
+                        <fieldset class="form-group border p-2">
+                            <label><strong>Sex</strong></label>
+                            <div class="form-check">
+                                <input id="anyCheckbox" class="form-check-input" value="" name="gender" type="radio">
+                                <label for="anyChekcbox" class="form-check-label">Any</label>
+                            </div>
+                            <div class="form-check">
+                                <input id="maleCheckbox" class="form-check-input" value="m" name="gender" type="radio">
+                                <label for="maleChekcbox" class="form-check-label">Male</label>
+                            </div>
+                            <div class="form-check">
+                                <input id="anyCheckbox" class="form-check-input" value="f" name="gender" type="radio">
+                                <label for="femaleChekcbox" class="form-check-label">Female</label>
+                            </div>
+                        </fieldset>
         
                     </div>
                     <div class="age">
                         <!-- <input id="ageRange" type="range" name="" min="" max=""> -->
                         <div class="form-group">
-                            <label for=""><strong>Age range: </strong> <span id="minAge"> any</span> - <span id="maxAge">any</span> &nbsp;</label>
+                            <fieldset class="border p-2">
+                                <label for=""><strong>Age range: </strong> <span id="minAge"> any</span> - <span id="maxAge">any</span> &nbsp;</label>
                             <div id="checkbox" class="form-check">
                                 <input id="ageRangeCheckBox" class="form-check-input" type="checkbox">
                                 <label for="ageRangeCheckBox" class="form-check-labeld">Enable</label>
                             </div>
                             <div id="slider"></div>
+                            </fieldset>
                         </div>
                     </div>
                     <div>
