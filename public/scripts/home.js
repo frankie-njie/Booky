@@ -1,9 +1,3 @@
-$('#myModal').on('shown.bs.modal', function () {
-    $('#myInput').trigger('focus')
-});
-  
-
-const url = "http://localhost:3000/search";
 const contact = [];
 
 let searchText = document.getElementById("searchText");
@@ -38,7 +32,7 @@ searchText.addEventListener("keyup", function(e) {
         .then(data => {
             matchdiv.style.display = "block"
             data.forEach(element => {
-                console.log(element.fName);
+                //console.log(element.fName);
 
                 //Display of suggestion for the search
                 let anchor = document.createElement("a")
@@ -121,7 +115,9 @@ function download(filename, text){
 searchBtn.addEventListener("click", function() {
     console.log("you have hit the server");
     window.location.href ='/generalsearch';
-});      
+}); 
+
+// window.addEventListener('click', closepopup());     
 
 function removelist (){
     matchdiv.style.display = "none"
@@ -129,6 +125,10 @@ function removelist (){
 function showpopup(){
     popupDiv.style.visibility = "visible"
 }
+// function closepopup({target}){
+//     console.log("you are on the window");
+//     popupDiv.style.visibility = "hidden"
+// }
 // $('document').ready(function() {
 //     $("#input-b9").fileinput({
 //         showPreview: false,

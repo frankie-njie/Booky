@@ -1,4 +1,4 @@
-var currentPageNumber = 1
+let currentPageNumber = 1
 $("document").ready(function() {
     $("#ageRangeCheckBox").change(function() {
         if (this.checked) {

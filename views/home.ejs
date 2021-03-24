@@ -1,4 +1,9 @@
-<%- include('partials/header'); -%>
+<html lang="en">
+<head>
+    <%- include('partials/head'); -%>
+</head>
+<body>
+    <%- include('partials/header'); -%>
 
     <div class="search-booky" action="/search" method="GET">
         <div class="bookyContent">
@@ -16,5 +21,12 @@
         <div id="match-list" class="match-list"></div>
     </div>
     <div id="popup" class="popup"></div>
+    
+    <footer>
+        <%- include('partials/footer'); -%>
+    </footer>
+</body>
+<script src="scripts/header.js"></script>
+<script src="scripts/home.js"></script>
 
-<%- include('partials/footer'); -%>
+</html>
