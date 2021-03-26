@@ -6,7 +6,7 @@ body{
 h1{
     text-align: center;
     font-size: 2.5em;
-    padding-bottom: 2rem;
+    /* padding-bottom: 1.5rem; */
 }
 sup{
     font-size: 12px !important ;
@@ -23,7 +23,7 @@ sup{
     color: #141414;
 }
 .search-booky{
-    margin: 15% auto;
+    margin: 8% auto;
 }
 .search-group{
     margin: auto;
@@ -35,6 +35,16 @@ sup{
 i{
     margin-left: 0.5em;
 }
+.bookyContent{
+    text-align: center;
+    padding-bottom: 10px ;
+}
+.bookyContent p {
+    font-size: 16px;
+    color: #7c7d7d;
+    margin-top: .5 rem;
+}
+
 /* Auto-complete for search */
 .match-list{
     border: 1px solid #ced4da;
@@ -96,7 +106,7 @@ a:hover{
 }
 /* general search styles */
 .match {
-    background-color: rgb(251, 251, 96)
+    background-color:#13a6e0
 }
 
 #slider {

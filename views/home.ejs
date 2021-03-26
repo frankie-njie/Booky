@@ -1,8 +1,16 @@
-<%- include('partials/header'); -%>
+<html lang="en">
+<head>
+    <%- include('partials/head'); -%>
+</head>
+<body>
+    <%- include('partials/header'); -%>
 
     <div class="search-booky" action="/search" method="GET">
-        <h1>Booky</h1>
-        <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p> -->
+        <div class="bookyContent">
+            <img src="images/activespace-logo.png" height="150" width="150" alt="">
+            <h1>Booky ActivSpaces</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+        </div>
         <div class="search-group input-group">
             <input class="searchbar form-control" type="text" placeholder="Search by Name or email" name="search" id="searchText">
             <div class="input-group-append">
@@ -13,5 +21,12 @@
         <div id="match-list" class="match-list"></div>
     </div>
     <div id="popup" class="popup"></div>
+    
+    <footer>
+        <%- include('partials/footer'); -%>
+    </footer>
+</body>
+<script src="scripts/header.js"></script>
+<script src="scripts/home.js"></script>
 
-<%- include('partials/footer'); -%>
+</html>

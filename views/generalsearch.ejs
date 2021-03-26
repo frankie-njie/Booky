@@ -1,17 +1,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booky Search</title>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script> src="scripts/search.js"</script>
-    <link rel="stylesheet" href="css/styles.css">
+    <%- include('partials/head'); -%>
 </head>
 
 <body>
@@ -20,37 +10,39 @@
         <div class="row contents">
             <div class="col-md-3 filters">
                 <h3>Filter By</h3>
-                    <div class="form-group">
-                        <label>Search first name, last name or email</label>
-                        <input id="filterText" class="form-control" type="text">
-        
+                    <div class="form-group">                     
+                        <input id="filterText" class="form-control" type="text" placeholder="Search first name, last name or email">     
                     </div>
                     <div class="sex">
-                        <label><strong>Sex</strong></label>
-        
-                        <div class="form-check">
-                            <input id="anyCheckbox" class="form-check-input" value="" name="gender" type="radio">
-                            <label for="anyChekcbox" class="form-check-label">Any</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="maleCheckbox" class="form-check-input" value="m" name="gender" type="radio">
-                            <label for="maleChekcbox" class="form-check-label">Male</label>
-                        </div>
-                        <div class="form-check">
-                            <input id="anyCheckbox" class="form-check-input" value="f" name="gender" type="radio">
-                            <label for="femaleChekcbox" class="form-check-label">Female</label>
-                        </div>
+
+                        <fieldset class="form-group border p-2">
+                            <label><strong>Sex</strong></label>
+                            <div class="form-check">
+                                <input id="anyCheckbox" class="form-check-input" value="" name="gender" type="radio">
+                                <label for="anyChekcbox" class="form-check-label">Any</label>
+                            </div>
+                            <div class="form-check">
+                                <input id="maleCheckbox" class="form-check-input" value="m" name="gender" type="radio">
+                                <label for="maleChekcbox" class="form-check-label">Male</label>
+                            </div>
+                            <div class="form-check">
+                                <input id="anyCheckbox" class="form-check-input" value="f" name="gender" type="radio">
+                                <label for="femaleChekcbox" class="form-check-label">Female</label>
+                            </div>
+                        </fieldset>
         
                     </div>
                     <div class="age">
                         <!-- <input id="ageRange" type="range" name="" min="" max=""> -->
                         <div class="form-group">
-                            <label for=""><strong>Age range: </strong> <span id="minAge"> any</span> - <span id="maxAge">any</span> &nbsp;</label>
+                            <fieldset class="border p-2">
+                                <label for=""><strong>Age range: </strong> <span id="minAge"> any</span> - <span id="maxAge">any</span> &nbsp;</label>
                             <div id="checkbox" class="form-check">
                                 <input id="ageRangeCheckBox" class="form-check-input" type="checkbox">
                                 <label for="ageRangeCheckBox" class="form-check-labeld">Enable</label>
                             </div>
                             <div id="slider"></div>
+                            </fieldset>
                         </div>
                     </div>
                     <div>
@@ -118,10 +110,10 @@
             </div>
         </div>
     </div>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="scripts/search.js"></script>
+    <footer>
+        <%- include('partials/footer'); -%>
+    </footer>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="scripts/search.js"></script>
 </body>
-
-
 </html>

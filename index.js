@@ -5,9 +5,6 @@ const ejs = require('ejs');
 const multer = require('multer');
 const csv = require('csvtojson');
 const fs = require('fs');
-// const { Parser } = require('json2csv');
-//const https = require('https');
-// const path = require('path');
 
 const BookycontactModel = require("./models/BookyContact");
 
@@ -31,7 +28,11 @@ const storage = multer.diskStorage({
 
 let upload = multer({ storage });
 
-app.get("/", async function(req, res) {
+app.get("/", function(req, res){
+    res.render('home')
+});
+
+app.get("/header", async function(req, res) {
 
     let allContacts = async () => {
         return await BookycontactModel.countDocuments({},  (err, val) => { 
@@ -66,8 +67,7 @@ app.get("/", async function(req, res) {
     const fCount = await femaleContacts();
     //console.log( countAll, mCount, fCount);
 
-    res.render("home", {countAll: countAll, maleContacts: mCount, femaleContacts: fCount} );
-
+    res.send({countAll: countAll, maleContacts: mCount, femaleContacts: fCount} );
 });
 
 //Endpoint for Search functionality on the home page
@@ -108,17 +108,7 @@ app.get("/generalsearch", async function(req, res) {
     const total = await BookycontactModel.countDocuments()
 
     res.render("generalsearch", { contact: contact, total: total, totalPages: Math.ceil(total/limit) })
-    //console.log(post);
 
-    // BookycontactModel.find({}, function(err, contact) {
-    //     if (err) {
-    //         console.log(err);
-    //         throw err;
-    //     }
-    //     //Send all data from database
-    //     //console.log(contact);
-    //     res.render("generalsearch", { contact: contact })
-    // })
 });
 
 
@@ -141,7 +131,6 @@ app.get("/searchAll", function(req, res) {
     if (req.query.sex){
         mongoQuery['sex'] = querySex
     }
-    // {age: {$gte: x, $lte: x}}
     if (req.query.minAge || req.query.maxAge){
         let ageRangeObj = {}
         if (req.query.minAge){
@@ -151,8 +140,7 @@ app.get("/searchAll", function(req, res) {
            ageRangeObj['$lte'] = queryMaxAge
         }
         mongoQuery['age'] = ageRangeObj
-    }
-    //console.log(mongoQuery);    
+    }  
 
     //Find queries in database
     BookycontactModel.find(mongoQuery, function(err, contacts) {
@@ -180,7 +168,6 @@ app.get('/download', async function(req, res){
     if (req.query.sex){
         mongoQuery['sex'] = querySex
     }
-    // {age: {$gte: x, $lte: x}}
     if (req.query.minAge || req.query.maxAge){
         let ageRangeObj = {}
         if (req.query.minAge){
