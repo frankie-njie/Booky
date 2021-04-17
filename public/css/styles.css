@@ -6,6 +6,7 @@ body{
 h1{
     text-align: center;
     font-size: 2.5em;
+    font-weight: 700;
     /* padding-bottom: 1.5rem; */
 }
 sup{
@@ -147,4 +148,70 @@ thead tr th {
   }
   .page-number-input {
       width: 50
+  }
+
+  @media screen and (max-width: 600px){
+    
+    body{
+        width: 100%;
+        font-size: 14px;
+    }
+    
+    .header{
+          width: 100%;
+    }
+
+    .navicons{
+        margin: -30px;
+    }
+    sup{
+        font-size: 10px !important ; 
+    }
+    h1{
+        text-align: center;
+        font-size: 2em;
+    }
+    h3{
+        font-size: 1.4rem;
+    }
+    .bookyContent p {
+        font-size: 14px;
+        margin-top: .2 rem;
+        padding: 0 5px;
+        text-align: center;
+    }
+
+    .search-booky{
+        margin: 20% auto;
+    }
+    .search-group{
+        margin: auto;
+        width: 90%;
+    }
+    .match-list{
+        width: 90%;
+    }
+    .popup{
+       width: 90%; 
+       left: 5%;
+    }
+    /* .footer{
+        overflow: hidden;
+    } */
+    .footercontent {
+        display: none;
+    }
+    .footer-div{
+        margin: 0 !important;
+    }
+    .footer-div :last-child{
+        margin-top: 10px;
+    }
+    .form-control{
+        font-size: inherit;
+    }
+    .filterResults{
+        margin-top: 10%;
+    }
+
   }

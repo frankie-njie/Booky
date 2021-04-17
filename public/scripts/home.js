@@ -16,6 +16,7 @@ searchText.addEventListener("keyup", function(e) {
     if (!searchText.value) {
         matchdiv.innerHTML = '';
         popupDiv.innerHTML = '';
+        popupDiv.style.visibility = "hidden";
         removelist();
         return
     }
@@ -117,7 +118,43 @@ searchBtn.addEventListener("click", function() {
     window.location.href ='/generalsearch';
 }); 
 
-// window.addEventListener('click', closepopup());     
+window.addEventListener('click', function({target}){
+
+    //console.log(e.target);
+    const popup = target.closest('.popup');
+    console.log("pop:" ,popup);
+
+    // you have clicked outside of popup
+    if(!popup){
+       console.log(popupDiv.style.visibility)
+        // if(popupDiv.style.visibility === "visible"){
+        //     console.log('here')
+        //     popupDiv.style.visibility = "hidden"
+        // }
+    }
+
+
+    // const clickedOnClosedPopup = popup && !popup.classList.contains('show');
+    // popupDiv.classList.remove('show')
+    // if (clickedOnClosedPopup ) {
+    //     popupDiv.style.visibility = "hidden"
+    // }
+    // let outsideClick  = popupDiv.style.visibility
+    // console.log("style attribute :");
+    // if(!popup && outsideClick === "visible" ){
+    //    // popupDiv.classList.remove('show')
+    //     console.log ("clicked")
+    // }
+
+    // console.log(clickedOnClosedPopup);
+    
+    // const clicked = popupDiv && 
+    // const popup = target.closest(popupDiv)
+    // console.log(popup);
+    // const clickClose = popup && !popupDiv.style.contains('visible');
+    // if(clickClose)
+    //  popupDiv.style.visibility = "hidden"
+} );     
 
 function removelist (){
     matchdiv.style.display = "none"
@@ -125,16 +162,3 @@ function removelist (){
 function showpopup(){
     popupDiv.style.visibility = "visible"
 }
-// function closepopup({target}){
-//     console.log("you are on the window");
-//     popupDiv.style.visibility = "hidden"
-// }
-// $('document').ready(function() {
-//     $("#input-b9").fileinput({
-//         showPreview: false,
-//         showUpload: false,
-//         elErrorContainer: '#kartik-file-errors',
-//         allowedFileExtensions: ["jpg", "png", "gif"],
-//         uploadUrl: '/site/file-upload-single'
-//     });
-// });
